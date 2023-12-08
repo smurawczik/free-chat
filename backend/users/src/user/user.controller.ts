@@ -10,15 +10,11 @@ export class UserController {
 
   @MessagePattern('createUser')
   create(@Payload() createUserDto: CreateUserDto) {
-    console.log('createUserDto', createUserDto);
-
     return this.userService.create(createUserDto);
   }
 
   @MessagePattern('findAllUser')
   findAll() {
-    console.log('findAllUser');
-
     return this.userService.findAll();
   }
 
