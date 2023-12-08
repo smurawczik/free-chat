@@ -17,6 +17,8 @@ export class UserController {
 
   @MessagePattern('findAllUser')
   findAll() {
+    console.log('findAllUser');
+
     return this.userService.findAll();
   }
 
