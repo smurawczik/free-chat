@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ChatState } from "./chat.slice.types";
 
-const initialState: ChatState = null;
+const initialState: ChatState = {
+  conversation: null,
+};
 
 export const chatSlice = createSlice({
   name: "chat",

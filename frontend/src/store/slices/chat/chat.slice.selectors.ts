@@ -7,5 +7,5 @@ const chatSelector = createSelector(
 );
 
 export const chatSelectors = {
-  hasChat: createSelector(chatSelector, (chat) => !!chat),
+  hasChat: createSelector(chatSelector, (chat) => !!chat.conversation),
 };

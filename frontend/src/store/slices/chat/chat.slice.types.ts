@@ -1,7 +1,9 @@
-export type ChatState = {
+export interface ChatData {
   _id: string;
   name: string;
   description: string;
   users: string[];
   messages: string[];
-} | null;
+}
+
+export type ChatState = { conversation: ChatData | null };
