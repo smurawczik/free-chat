@@ -10,6 +10,11 @@ export class AppController {
     @Inject('USER_SERVICE') private client: ClientProxy,
   ) {}
 
+  @Get('/')
+  async ping() {
+    return { message: 'Orchestrator is up and running' };
+  }
+
   @Get('/users')
   async getAllUsers(): Promise<any> {
     return firstValueFrom(this.client.send('findAllUser', {}));
