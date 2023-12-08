@@ -1,5 +1,5 @@
 import { axiosInstance } from ".";
-import { UserState } from "../store/slices/user.slice.types";
+import { UserState } from "../store/slices/user/user.slice.types";
 
 export const usersApi = {
   getUser: async () => {
