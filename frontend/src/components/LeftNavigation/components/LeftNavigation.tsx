@@ -2,6 +2,7 @@ import { deepPurple } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { ContactSearch } from "../../ContactSearch/components/ContactSearch";
 import { LeftNavHeader } from "./LeftNavHeader";
+import { LeftNavMenu } from "./LeftNavMenu";
 
 const StyledLeftNavigation = styled("div")(({ theme }) => ({
   flex: 0.3,
@@ -15,10 +16,7 @@ export const LeftNavigation = () => {
     <StyledLeftNavigation>
       <LeftNavHeader />
       <ContactSearch />
-      <div> navigation (contacts, archived, etc) </div>
-      <div> chat list </div>
-      <div> chat list </div>
-      <div> chat list </div>
+      <LeftNavMenu />
     </StyledLeftNavigation>
   );
 };
