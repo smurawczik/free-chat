@@ -1,16 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
     private jwtService: JwtService,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
   async signIn(email: string, pass: string) {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      select: { password: true },
+    });
     if (user?.password !== pass) {
       throw new UnauthorizedException();
     }

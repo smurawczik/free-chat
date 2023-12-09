@@ -6,18 +6,34 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Response } from 'express';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { password, ...user } = await this.userService.create(createUserDto);
+
+    const token = await this.authService.signIn(user.email, password);
+    response.header('Authorization', `${token?.access_token}`);
+
+    console.log('token', token);
+
+    return user;
   }
 
   @Get()
@@ -27,7 +43,7 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')

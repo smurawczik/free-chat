@@ -14,6 +14,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         baseURL: `http://${configService.get<string>(
           'USER_SERVICE_HOST',
         )}:3001`,
+        withCredentials: true,
       }),
       inject: [ConfigService],
     }),
