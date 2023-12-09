@@ -8,7 +8,7 @@ import { UserService } from './user.service';
     HttpModule.register({
       timeout: 5000,
       maxRedirects: 3,
-      baseURL: 'http://localhost:3001',
+      baseURL: 'http://users:3001',
     }),
   ],
   controllers: [UserController],
