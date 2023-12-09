@@ -32,11 +32,13 @@ export const QuickUserCreate = () => {
     const firstName = formData.get("first_name") as string;
     const lastName = formData.get("last_name") as string;
     const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     usersApi.createQuickUser({
       firstName,
       lastName,
       email,
+      password,
     });
   };
 
@@ -81,6 +83,13 @@ export const QuickUserCreate = () => {
             name="email"
             type="email"
             placeholder="Enter your email address"
+          />
+          <Box marginBottom={2} />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter a password"
           />
         </DialogContent>
         <StyledDialogActions>

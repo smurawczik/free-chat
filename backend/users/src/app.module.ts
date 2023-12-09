@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 console.log('process.env.DB_HOST', process.env.DB_HOST);
 
@@ -24,12 +26,14 @@ console.log('process.env.DB_HOST', process.env.DB_HOST);
         database: 'chat-dev',
         autoLoadEntities: true,
         synchronize: true,
+        dropSchema: true,
       }),
       inject: [ConfigService],
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

@@ -1,20 +1,18 @@
 import { axiosInstance } from ".";
-import { UserResponse } from "./types";
+import { UserRequest, UserResponse } from "./types";
 
 export const usersApi = {
   createQuickUser: async ({
     firstName,
     lastName,
     email,
-  }: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  }) => {
+    password,
+  }: UserRequest) => {
     const response = await axiosInstance.post<UserResponse>("/user", {
       firstName,
       lastName,
       email,
+      password,
     });
     return response.data;
   },
