@@ -5,6 +5,8 @@ services:
     build:
       context: ./backend/users
       dockerfile: Dockerfile
+    environment:
+      - DB_HOST=database
     ports:
       - 3001:3001
     depends_on:
@@ -14,6 +16,8 @@ services:
     build:
       context: ./backend/orchestrator
       dockerfile: Dockerfile
+    environment:
+      - USER_SERVICE_HOST=users
     ports:
       - 3000:3000
     depends_on:

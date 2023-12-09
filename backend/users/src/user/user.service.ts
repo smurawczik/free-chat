@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -19,13 +19,12 @@ export class UserService {
       email: createUserDto.email,
     });
 
-    try {
-      const savedDbUser = await this.usersRepository.save(newUser);
-      return savedDbUser;
-    } catch (error) {
-      console.log('error', error);
-      return error;
-    }
+    // try {
+    const savedDbUser = await this.usersRepository.save(newUser);
+    return savedDbUser;
+    // } catch (error) {
+    //   throw new BadRequestException('User already exists');
+    // }
   }
 
   findAll() {
