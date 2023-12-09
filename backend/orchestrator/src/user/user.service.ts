@@ -1,18 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
+  constructor(private readonly httpService: HttpService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return firstValueFrom(
-      this.client.send<User, CreateUserDto>('createUser', createUserDto),
+  async create(createUserDto: CreateUserDto) {
+    const { data } = await this.httpService.axiosRef.post(
+      '/user',
+      createUserDto,
     );
+    return data;
   }
 
   findAll() {

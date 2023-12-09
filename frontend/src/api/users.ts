@@ -12,8 +12,8 @@ export const usersApi = {
     email: string;
   }) => {
     const response = await axiosInstance.post<UserResponse>("/user", {
-      first_name: firstName,
-      last_name: lastName,
+      firstName,
+      lastName,
       email,
     });
     return response.data;

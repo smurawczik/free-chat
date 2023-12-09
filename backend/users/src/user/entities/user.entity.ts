@@ -1,18 +1,16 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-export type UserDocument = HydratedDocument<User>;
-
-@Schema()
+@Entity()
 export class User {
-  @Prop({ required: true })
-  first_name: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: number;
 
-  @Prop({ required: true })
-  last_name: string;
+  @Column()
+  firstName: string;
 
-  @Prop({ required: true, schema: { unique: true } })
+  @Column()
+  lastName: string;
+
+  @Column({ unique: true })
   email: string;
 }
-
-export const UserSchema = SchemaFactory.createForClass(User);

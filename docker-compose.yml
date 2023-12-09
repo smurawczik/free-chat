@@ -21,8 +21,12 @@ services:
       
 
   database:
-    image: mongo:7.0.4
-    container_name: mongodb
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: chat-dev
     ports:
-      - 27017:27017
+      - 5432:5432
 
