@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Res,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './entities/user.entity';
 import { UserService } from './user.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -29,6 +32,12 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('me')
+  findMe(@Request() req: any): Promise<UserResponse> {
+    return this.userService.findMe(req.user.id);
   }
 
   @Get(':id')

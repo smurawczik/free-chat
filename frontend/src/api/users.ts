@@ -8,23 +8,21 @@ export const usersApi = {
     email,
     password,
   }: UserRequest) => {
-    const response = await axiosInstance.post<UserResponse>("/user", {
-      firstName,
-      lastName,
-      email,
-      password,
-    });
+    const response = await axiosInstance.post<UserResponse>(
+      "/user",
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
     return response.data;
   },
   getUser: async () => {
-    const response = await axiosInstance.get<UserResponse>("/users/me");
-    return response.data;
-  },
-  findUsersByName: async (name: string) => {
-    const response = await axiosInstance.get<UserResponse[]>("/users", {
-      params: {
-        name,
-      },
+    const response = await axiosInstance.get<UserResponse>("/user/me", {
+      withCredentials: true,
     });
     return response.data;
   },

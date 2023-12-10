@@ -22,9 +22,6 @@ export class AuthService {
         compare_password: pass,
       });
 
-    console.log('user', user);
-    console.log('hashedPassword', matchedPassword);
-
     if (!matchedPassword) {
       throw new UnauthorizedException();
     }
@@ -32,7 +29,7 @@ export class AuthService {
     const date = new Date();
     date.setDate(date.getDate() + 7);
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email };
     return {
       access_token: await this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),

@@ -1,11 +1,11 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Res } from '@nestjs/common';
+import { HttpException, Injectable, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { noop } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { noop } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -35,6 +35,21 @@ export class UserService {
       httpOnly: true,
       expires: auth.expiration_date,
     });
+
+    return user;
+  }
+
+  async findMe(userId: string) {
+    const { data } = await this.httpService.axiosRef.post<User>('/user/me', {
+      userId,
+    });
+
+    if (!data) {
+      throw new HttpException('Error', 404);
+    }
+
+    const { password, ...user } = data;
+    noop.apply(this, [password]);
 
     return user;
   }

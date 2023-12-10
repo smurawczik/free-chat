@@ -13,6 +13,7 @@ export const userSlice = createSlice({
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         email: action.payload.email,
+        id: action.payload.id,
       };
     },
   },
