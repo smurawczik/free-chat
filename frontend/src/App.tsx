@@ -9,7 +9,7 @@ import { useAppSelector } from "./store/hooks";
 import { authSelectors } from "./store/slices/auth/auth.slice.selectors";
 
 function App() {
-  useAuth();
+  useAuth({ initialFetch: true });
 
   const authSuccess = useAppSelector(authSelectors.authIsSucceeded);
   const authLoading = useAppSelector(authSelectors.authIsLoading);

@@ -14,17 +14,19 @@ import { Input } from "../../Input";
 import { FormEvent, useRef } from "react";
 import { usersApi } from "../../../api/users";
 import { authSelectors } from "../../../store/slices/auth/auth.slice.selectors";
+import { useAuth } from "../../../hooks/useAuth";
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
   padding: theme.spacing(0, 3, 2, 3),
 }));
 
 export const QuickUserCreate = () => {
+  const { fetchUser } = useAuth({ initialFetch: false });
   const authFailed = useAppSelector(authSelectors.authIsFailed);
   const hasUser = useAppSelector(userSelectors.hasUser);
   const createUserFormRef = useRef<HTMLFormElement>(null);
 
-  const handleQuickUserCreate = (e: FormEvent<HTMLFormElement>) => {
+  const handleQuickUserCreate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const createUserForm = createUserFormRef.current;
@@ -36,12 +38,14 @@ export const QuickUserCreate = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    usersApi.createQuickUser({
+    await usersApi.createQuickUser({
       firstName,
       lastName,
       email,
       password,
     });
+
+    await fetchUser();
   };
 
   if (authFailed) {
