@@ -1,39 +1,23 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Res,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Response } from 'express';
-import { AuthService } from 'src/auth/auth.service';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private authService: AuthService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(
-    @Body() createUserDto: CreateUserDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const { password, ...user } = await this.userService.create(createUserDto);
-
-    const token = await this.authService.signIn(user.email, password);
-    response.header('Authorization', `${token?.access_token}`);
-
-    console.log('token', token);
-
-    return user;
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
   @Get()

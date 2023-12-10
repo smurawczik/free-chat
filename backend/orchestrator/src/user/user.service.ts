@@ -1,36 +1,42 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Req, Res } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Request, Response } from 'express';
+import { User } from './entities/user.entity';
+import { noop } from 'rxjs';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private authService: AuthService,
+  ) {}
 
   async create(
     createUserDto: CreateUserDto,
-    @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    // try {
-    const { data, headers } = await this.httpService.axiosRef.post(
+    const { data } = await this.httpService.axiosRef.post<User>(
       '/user',
       createUserDto,
     );
-    console.log('data', data);
-    // console.log('config', config);
-    console.log('headers', headers);
-    console.log('RESPONSE HEADERS', response.getHeaders());
 
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-    response.cookie('access-token', headers.authorization, {
+    const { password, ...user } = data;
+    noop.apply(this, [password]);
+
+    const auth = await this.authService.signIn(
+      createUserDto.email,
+      createUserDto.password,
+    );
+
+    response.cookie('access-token', auth.access_token, {
       httpOnly: true,
-      expires: date,
+      expires: auth.expiration_date,
     });
 
-    return data;
+    return user;
   }
 
   findAll() {

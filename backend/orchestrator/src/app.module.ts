@@ -1,15 +1,10 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { ConfigModule } from '@nestjs/config';
-import { ApiAuthMiddleware } from './user/middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -24,14 +19,9 @@ import { ApiAuthMiddleware } from './user/middleware/auth.middleware';
         limit: 100,
       },
     ]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(ApiAuthMiddleware)
-      .forRoutes({ path: 'user', method: RequestMethod.ALL });
-  }
-}
+export class AppModule {}

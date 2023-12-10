@@ -1,7 +1,14 @@
 export class User {
-  id?: string;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
-  password?: string;
+  password: string;
+}
+
+export class UserResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }

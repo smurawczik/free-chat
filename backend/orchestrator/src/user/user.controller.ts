@@ -6,13 +6,13 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserResponse } from './entities/user.entity';
 import { UserService } from './user.service';
-import { Request, Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -21,12 +21,9 @@ export class UserController {
   @Post()
   create(
     @Body() createUserDto: CreateUserDto,
-    @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
-  ) {
-    console.log('createUserDto', createUserDto);
-
-    return this.userService.create(createUserDto, req, response);
+  ): Promise<UserResponse> {
+    return this.userService.create(createUserDto, response);
   }
 
   @Get()
