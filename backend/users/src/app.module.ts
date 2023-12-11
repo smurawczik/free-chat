@@ -3,8 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
 import { PasswordModule } from './password/password.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +22,8 @@ import { PasswordModule } from './password/password.module';
         username: 'docker',
         password: 'docker',
         database: 'chat-dev',
+        entities: ['dist/**/*.entity{.ts,.js}'],
+        migrations: ['dist/migrations/*{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: true,
         dropSchema: true,
