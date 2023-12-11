@@ -8,4 +8,5 @@ const userSelector = createSelector(
 
 export const userSelectors = {
   hasUser: createSelector(userSelector, (user) => user.profile !== null),
+  userProfile: createSelector(userSelector, (user) => user.profile),
 };

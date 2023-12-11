@@ -1,5 +1,7 @@
 import Box from "@mui/material/Box";
-import { NewChat } from "../../NewChat/components/NewChat";
+import { NewChat } from "../../NewChat";
+import { AddContact } from "../../AddContact";
+import { UserProfile } from "../../UserProfile";
 
 export const LeftNavHeader = () => {
   return (
@@ -9,8 +11,11 @@ export const LeftNavHeader = () => {
       alignItems="center"
       marginBottom={2}
     >
-      <div>user profile</div>
-      <NewChat />
+      <UserProfile />
+      <Box gap={1} display="flex">
+        <AddContact />
+        <NewChat />
+      </Box>
     </Box>
   );
 };

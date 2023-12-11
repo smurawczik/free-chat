@@ -1,15 +1,9 @@
 import { AddOutlined } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.primary.light,
-  backgroundColor: "white",
-}));
+import { StyledIconButton } from "../../StyledIconButton";
 
 export const NewChat = () => {
   return (
-    <StyledIconButton size="small" color="primary">
+    <StyledIconButton tooltip="Start a conversation">
       <AddOutlined />
     </StyledIconButton>
   );
