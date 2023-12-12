@@ -33,14 +33,10 @@ export const QuickLogin: FC<{ onRegisterClick: () => void }> = ({
     if (!createUserForm) return;
 
     const formData = new FormData(createUserForm);
-    const firstName = formData.get("first_name") as string;
-    const lastName = formData.get("last_name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    await usersApi.createQuickUser({
-      firstName,
-      lastName,
+    await usersApi.login({
       email,
       password,
     });

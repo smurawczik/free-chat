@@ -29,6 +29,27 @@ export class UserService {
     return this.usersRepository.save(newUser);
   }
 
+  async login(email: string, password: string) {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const isPasswordMatching = await this.passwordService.compare(
+      user.password,
+      password,
+    );
+
+    if (!isPasswordMatching) {
+      throw new Error('Error logging in');
+    }
+
+    return user;
+  }
+
   findMe(userId: string) {
     return this.usersRepository.findOne({
       where: { id: userId },
