@@ -6,6 +6,7 @@ import {
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import { useUserContacts } from "../../../hooks/useUserContacts";
 
 const StyledLeftNavMenu = styled(Box)(() => ({
   display: "flex",
@@ -21,6 +22,8 @@ const StyledIconButton = styled(IconButton)(() => ({
 }));
 
 export const LeftNavMenu = () => {
+  useUserContacts();
+
   return (
     <>
       <StyledLeftNavMenu>

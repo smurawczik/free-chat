@@ -8,6 +8,15 @@ import { AuthService } from './auth.service';
 @Module({
   imports: [
     ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '7 days' },
+      }),
+      inject: [ConfigService],
+    }),
     HttpModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -17,15 +26,6 @@ import { AuthService } from './auth.service';
           'USER_SERVICE_HOST',
         )}:3001`,
         withCredentials: true,
-      }),
-      inject: [ConfigService],
-    }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        global: true,
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '7 days' },
       }),
       inject: [ConfigService],
     }),

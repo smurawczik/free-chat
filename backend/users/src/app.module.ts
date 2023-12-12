@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PasswordModule } from './password/password.module';
 import { UserModule } from './user/user.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -27,10 +28,12 @@ import { UserModule } from './user/user.module';
         autoLoadEntities: true,
         synchronize: true,
         dropSchema: true,
+        logging: true,
       }),
       inject: [ConfigService],
     }),
     PasswordModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

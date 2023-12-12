@@ -11,3 +11,18 @@ export interface UserRequest {
   email: string;
   password: string;
 }
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface ContactResponse {
+  id: string;
+  contact: string;
+  user: string;
+}
+
+export interface ContactRequest {
+  userId: string;
+}

@@ -1,11 +1,8 @@
 import { axiosInstance } from ".";
-import { UserRequest, UserResponse } from "./types";
+import { LoginRequest, UserResponse } from "./types";
 
 export const authApi = {
-  login: async ({
-    email,
-    password,
-  }: Pick<UserRequest, "email" | "password">) => {
+  login: async ({ email, password }: LoginRequest) => {
     const response = await axiosInstance.post<UserResponse>(
       "/auth/login",
       { email, password },
