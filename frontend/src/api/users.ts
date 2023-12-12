@@ -26,15 +26,4 @@ export const usersApi = {
     });
     return response.data;
   },
-  login: async ({
-    email,
-    password,
-  }: Pick<UserRequest, "email" | "password">) => {
-    const response = await axiosInstance.post<UserResponse>(
-      "/user/login",
-      { email, password },
-      { withCredentials: true }
-    );
-    return response.data;
-  },
 };

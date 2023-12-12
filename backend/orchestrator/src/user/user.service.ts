@@ -6,7 +6,6 @@ import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -27,32 +26,11 @@ export class UserService {
     const { password, ...user } = data;
     noop.apply(this, [password]);
 
-    await this.signInUser(
+    await this.authService.jwtSignUser(
       createUserDto.email,
       createUserDto.password,
       response,
     );
-
-    return user;
-  }
-
-  async login(
-    loginUserDto: LoginUserDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const { data } = await this.httpService.axiosRef.post<User>('/user/login', {
-      email: loginUserDto.email,
-      password: loginUserDto.password,
-    });
-
-    if (!data) {
-      throw new HttpException('Error', 404);
-    }
-
-    const { password, ...user } = data;
-    noop.apply(this, [password]);
-
-    await this.signInUser(loginUserDto.email, loginUserDto.password, response);
 
     return user;
   }
@@ -88,18 +66,5 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
-  }
-
-  private async signInUser(
-    email: string,
-    password: string,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const auth = await this.authService.signIn(email, password);
-
-    response.cookie('access-token', auth.access_token, {
-      httpOnly: true,
-      expires: auth.expiration_date,
-    });
   }
 }

@@ -1,8 +1,17 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { noop } from 'rxjs';
 import { UserDto } from 'src/user/dto/user.dto';
+import { User } from 'src/user/entities/user.entity';
+import { LoginUserDto } from './dto/login-user.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -36,5 +45,39 @@ export class AuthService {
       }),
       expiration_date: date,
     };
+  }
+
+  async login(
+    loginUserDto: LoginUserDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { data } = await this.httpService.axiosRef.post<User>('/user/find', {
+      email: loginUserDto.email,
+      password: loginUserDto.password,
+    });
+
+    if (!data) {
+      throw new HttpException('Error', 404);
+    }
+
+    const { password, ...user } = data;
+    noop.apply(this, [password]);
+
+    await this.jwtSignUser(loginUserDto.email, loginUserDto.password, response);
+
+    return user;
+  }
+
+  async jwtSignUser(
+    email: string,
+    password: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const auth = await this.signIn(email, password);
+
+    response.cookie('access-token', auth.access_token, {
+      httpOnly: true,
+      expires: auth.expiration_date,
+    });
   }
 }

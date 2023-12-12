@@ -29,7 +29,7 @@ export class UserService {
     return this.usersRepository.save(newUser);
   }
 
-  async login(email: string, password: string) {
+  async find(email: string, password: string) {
     const user = await this.usersRepository.findOne({
       where: { email },
     });
@@ -44,7 +44,7 @@ export class UserService {
     );
 
     if (!isPasswordMatching) {
-      throw new Error('Error logging in');
+      throw new Error('Error');
     }
 
     return user;

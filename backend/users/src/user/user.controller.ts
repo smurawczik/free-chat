@@ -30,9 +30,9 @@ export class UserController {
     return this.userService.findMe(userId);
   }
 
-  @Post('login')
-  login(@Body() { email, password }: { email: string; password: string }) {
-    return this.userService.login(email, password);
+  @Post('find')
+  find(@Body() { email, password }: { email: string; password: string }) {
+    return this.userService.find(email, password);
   }
 
   @Get(':id')

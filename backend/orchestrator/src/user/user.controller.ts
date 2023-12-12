@@ -16,7 +16,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './entities/user.entity';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -28,14 +27,6 @@ export class UserController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<UserResponse> {
     return this.userService.create(createUserDto, response);
-  }
-
-  @Post('login')
-  login(
-    @Body() loginUserDto: LoginUserDto,
-    @Res({ passthrough: true }) response: Response,
-  ): Promise<UserResponse> {
-    return this.userService.login(loginUserDto, response);
   }
 
   @Get()

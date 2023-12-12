@@ -6,11 +6,11 @@ import {
   DialogTitle,
   styled,
 } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 import { FC, FormEvent, useRef } from "react";
-import { usersApi } from "../../../api/users";
+import { authApi } from "../../../api/auth";
 import { useAuth } from "../../../hooks/useAuth";
 import { Input } from "../../Input";
-import { deepPurple } from "@mui/material/colors";
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
   padding: theme.spacing(0, 3, 2, 3),
@@ -36,7 +36,7 @@ export const QuickLogin: FC<{ onRegisterClick: () => void }> = ({
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    await usersApi.login({
+    await authApi.login({
       email,
       password,
     });
