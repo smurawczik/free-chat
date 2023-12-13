@@ -14,6 +14,7 @@ export const userSlice = createSlice({
         lastName: action.payload.lastName,
         email: action.payload.email,
         id: action.payload.id,
+        lastConnection: action.payload.lastConnection,
       };
     },
     setUserContacts: (state, action: PayloadAction<User[]>) => {

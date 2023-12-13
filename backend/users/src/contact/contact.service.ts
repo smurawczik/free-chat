@@ -32,6 +32,7 @@ export class ContactService {
           email: true,
           firstName: true,
           lastName: true,
+          lastConnection: true,
         },
       },
       relations: {

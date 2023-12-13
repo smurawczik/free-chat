@@ -10,7 +10,8 @@ export class BaseUsers1702295411048 implements MigrationInterface {
         firstName: 'Admin',
         lastName: 'Admin',
         email: 'admin@localhost',
-        password: await bcrypt.hash('admin', 10),
+        password: await bcrypt.hash('aaaa', 10),
+        lastConnection: new Date().toUTCString(),
       }),
       queryRunner.manager.create(User, {
         firstName: 'sebastian',
@@ -22,7 +23,19 @@ export class BaseUsers1702295411048 implements MigrationInterface {
         firstName: 'test',
         lastName: 'test',
         email: 'test@localhost',
-        password: await bcrypt.hash('test', 10),
+        password: await bcrypt.hash('aaaa', 10),
+        lastConnection: new Date(
+          new Date().setDate(new Date().getDate() - 2),
+        ).toUTCString(),
+      }),
+      queryRunner.manager.create(User, {
+        firstName: 'pepe',
+        lastName: 'grillo',
+        email: 'pepe@localhost',
+        password: await bcrypt.hash('aaaa', 10),
+        lastConnection: new Date(
+          new Date().getTime() - 20 * 60000,
+        ).toUTCString(),
       }),
     ];
     await queryRunner.manager.save(users);
@@ -39,6 +52,10 @@ export class BaseUsers1702295411048 implements MigrationInterface {
       queryRunner.manager.create(Contact, {
         contact: users[2],
         user: users[0],
+      }),
+      queryRunner.manager.create(Contact, {
+        contact: users[3],
+        user: users[1],
       }),
     ];
     await queryRunner.manager.save(contacts);

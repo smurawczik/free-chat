@@ -3,6 +3,7 @@ export interface UserResponse {
   firstName: string;
   lastName: string;
   email: string;
+  lastConnection: string | null;
 }
 
 export interface UserRequest {
@@ -22,6 +23,7 @@ export interface ContactResponse {
   firstName: string;
   lastName: string;
   email: string;
+  lastConnection: string | null;
 }
 
 export interface ContactRequest {

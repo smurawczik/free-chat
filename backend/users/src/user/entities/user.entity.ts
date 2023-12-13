@@ -18,6 +18,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true, type: 'timestamptz' })
+  lastConnection: string | null;
+
   @OneToMany(() => Contact, (contact) => contact.user)
   contacts: Contact[];
 }
