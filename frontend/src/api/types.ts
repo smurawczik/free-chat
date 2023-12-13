@@ -19,8 +19,9 @@ export interface LoginRequest {
 
 export interface ContactResponse {
   id: string;
-  contact: string;
-  user: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export interface ContactRequest {

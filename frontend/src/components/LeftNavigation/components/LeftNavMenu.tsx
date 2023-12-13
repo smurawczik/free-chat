@@ -6,15 +6,19 @@ import {
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
-import { useUserContacts } from "../../../hooks/useUserContacts";
+import { useState } from "react";
+import { Contacts } from "../../Contacts";
+import { MenuItems } from "../types";
 
 const StyledLeftNavMenu = styled(Box)(() => ({
   display: "flex",
   gap: "1rem",
 }));
 
-const StyledIconButton = styled(IconButton)(() => ({
-  opacity: 0.7,
+const StyledIconButton = styled(IconButton, {
+  shouldForwardProp: (props) => props !== "active",
+})<{ active?: boolean }>(({ active }) => ({
+  opacity: active ? 1 : 0.7,
   color: "white",
   "&:hover": {
     opacity: 1,
@@ -22,25 +26,39 @@ const StyledIconButton = styled(IconButton)(() => ({
 }));
 
 export const LeftNavMenu = () => {
-  useUserContacts();
+  const [menuState, setMenuState] = useState<MenuItems>(MenuItems.CONTACTS);
+
+  const contactOption = menuState === MenuItems.CONTACTS;
+  const recentOption = menuState === MenuItems.RECENT;
+  const archiveOption = menuState === MenuItems.ARCHIVE;
 
   return (
     <>
       <StyledLeftNavMenu>
-        <StyledIconButton>
+        <StyledIconButton
+          active={recentOption}
+          onClick={() => setMenuState(MenuItems.RECENT)}
+        >
           <HistoryOutlined />
         </StyledIconButton>
-        <StyledIconButton>
+        <StyledIconButton
+          active={archiveOption}
+          onClick={() => setMenuState(MenuItems.ARCHIVE)}
+        >
           <Inventory2Outlined />
         </StyledIconButton>
-        <StyledIconButton>
+        <StyledIconButton
+          active={contactOption}
+          onClick={() => setMenuState(MenuItems.CONTACTS)}
+        >
           <ContactsOutlined />
         </StyledIconButton>
       </StyledLeftNavMenu>
-      <Box> chat list </Box>
-      <div> chat list </div>
-      <div> chat list </div>
-      <div> chat list </div>
+      <Box>
+        {contactOption && <Contacts />}
+        {recentOption && <h1>Recent</h1>}
+        {archiveOption && <h1>Archive</h1>}
+      </Box>
     </>
   );
 };

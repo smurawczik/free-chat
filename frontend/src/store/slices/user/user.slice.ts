@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { User, UserState } from "./user.slice.types";
 
-const initialState: UserState = { profile: null };
+const initialState: UserState = { profile: null, contacts: [] };
 
 export const userSlice = createSlice({
   name: "user",
@@ -16,10 +16,13 @@ export const userSlice = createSlice({
         id: action.payload.id,
       };
     },
+    setUserContacts: (state, action: PayloadAction<User[]>) => {
+      state.contacts = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser } = userSlice.actions;
+export const { setUser, setUserContacts } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -7,4 +7,5 @@ export interface User {
 
 export type UserState = {
   profile: User | null;
+  contacts: User[];
 };
