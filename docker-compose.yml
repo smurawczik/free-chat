@@ -2,6 +2,9 @@ version: '3.8'
 services:
   users:
     container_name: users
+    volumes:
+      - ./backend/users:/usr/src/users_app
+      - /usr/src/users_app/node_modules
     build:
       context: ./backend/users
       dockerfile: Dockerfile
@@ -13,6 +16,9 @@ services:
       - database
   orchestrator:
     container_name: orchestrator
+    volumes:
+      - ./backend/orchestrator:/usr/src/orchestrator_app
+      - /usr/src/orchestrator_app/node_modules
     build:
       context: ./backend/orchestrator
       dockerfile: Dockerfile
@@ -28,6 +34,8 @@ services:
     image: postgres
     container_name: database
     restart: on-failure
+    volumes:
+      - ./data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
