@@ -1,20 +1,20 @@
 # Use an official Node.js runtime as the base image
-FROM node:18
-
-# Set the working directory in the container
+FROM node:18 as base
 WORKDIR /users
-
-# Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm install
-
-# Copy the rest of the app source code to the container
+FROM base as build
+RUN npm ci
 COPY . .
+RUN npm run build
 
-# Expose the port on which the app will run
-EXPOSE 3001
+FROM base as debug
+RUN npm ci
+COPY . .
+CMD ["npm", "run", "start:dev"]
 
-# Start the app
-CMD [ "npm", "run", "start:dev" ]
+FROM base as prod   
+ENV NODE_ENV=production
+RUN npm ci --production
+COPY --from=build /users/dist ./
+CMD ["npm", "run", "start"]

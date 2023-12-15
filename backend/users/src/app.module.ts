@@ -26,8 +26,6 @@ import { ContactModule } from './contact/contact.module';
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['dist/migrations/*{.ts,.js}'],
         autoLoadEntities: true,
-        synchronize: true,
-        dropSchema: true,
         logging: true,
       }),
       inject: [ConfigService],

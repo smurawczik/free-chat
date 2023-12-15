@@ -16,7 +16,7 @@ const StyledIconContainer = styled("div")(({ theme }) => ({
   justifyContent: "center",
   marginBottom: 10,
   borderRadius: "50%",
-  border: `4px solid ${theme.palette.primary.light}`,
+  border: `3px solid ${theme.palette.primary.light}`,
   padding: theme.spacing(2),
 }));
 
@@ -26,7 +26,7 @@ export const NoChat = () => {
       <StyledIconContainer>
         <QuestionAnswerIcon sx={{ fontSize: 80 }} color="primary" />
       </StyledIconContainer>
-      <Typography color="primary" variant="h4">
+      <Typography color="primary" variant="h4" fontWeight={200}>
         No hay chats seleccionados
       </Typography>
     </StyledNoChatContainer>
