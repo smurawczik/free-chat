@@ -20,4 +20,23 @@ export class ContactService {
       status: userContact.status,
     }));
   }
+
+  async addNewContact(userId: string, contactId: string) {
+    if (!userId || !contactId) {
+      return [];
+    }
+
+    const { data: userContact } =
+      await this.httpService.axiosRef.post<ContactResponse>('/contact/add', {
+        userId,
+        contactId,
+      });
+
+    console.log(userContact);
+
+    return {
+      ...userContact.contact,
+      status: userContact.status,
+    };
+  }
 }

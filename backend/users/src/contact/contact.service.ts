@@ -12,10 +12,18 @@ export class ContactService {
     private contactRepository: Repository<Contact>,
   ) {}
 
-  create(createContactDto: CreateContactDto) {
-    console.log(createContactDto);
+  async create(createContactDto: CreateContactDto) {
+    const newContact = this.contactRepository.create({
+      contact: {
+        id: createContactDto.contactId,
+      },
+      status: 'pending',
+      user: {
+        id: createContactDto.userId,
+      },
+    });
 
-    return 'This action adds a new contact';
+    return this.contactRepository.save(newContact);
   }
 
   async findUserContacts(userId: string) {

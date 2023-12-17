@@ -8,4 +8,12 @@ export const contactsApi = {
     });
     return response.data;
   },
+  addContact: async (contactId: string) => {
+    const response = await axiosInstance.post<ContactResponse>(
+      "/contact/add",
+      { contactId },
+      { withCredentials: true }
+    );
+    return response.data;
+  },
 };

@@ -1,1 +1,4 @@
-export class CreateContactDto {}
+export class CreateContactDto {
+  contactId: string;
+  userId: string;
+}

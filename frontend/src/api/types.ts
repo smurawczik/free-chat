@@ -24,6 +24,7 @@ export interface ContactResponse {
   lastName: string;
   email: string;
   lastConnection: string | null;
+  status: "accepted" | "pending" | "rejected";
 }
 
 export interface ContactRequest {

@@ -12,7 +12,9 @@ import { setDialogState } from "../../../store/slices/ui/ui.slice";
 import { uiSelectors } from "../../../store/slices/ui/ui.slice.selectors";
 import { SearchContactAutocomplete } from "./SearchContactAutocomplete";
 import { UserResponse } from "../../../api/types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { contactsApi } from "../../../api/contacts";
+import { addNewContact } from "../../../store/slices/user/user.slice";
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
   padding: theme.spacing(0, 3, 2, 3),
@@ -24,6 +26,26 @@ export const AddContactDialog = () => {
     uiSelectors.isModalOpen("addContact")
   );
   const [value, setValue] = useState<UserResponse | null>(null);
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (value) {
+        try {
+          const newContact = await contactsApi.addContact(value.id);
+          if (!newContact) {
+            throw new Error("Something went wrong");
+          }
+
+          dispatch(addNewContact(value));
+          dispatch(setDialogState({ name: "addContact", status: false }));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
+    [dispatch, value]
+  );
 
   return (
     <Dialog
@@ -44,7 +66,7 @@ export const AddContactDialog = () => {
       }}
     >
       <Box display="flex" alignItems="center">
-        <form style={{ flex: 1 }}>
+        <form style={{ flex: 1 }} onSubmit={handleSubmit}>
           <DialogTitle>Add Contact</DialogTitle>
           <DialogContent>
             <SearchContactAutocomplete onSelect={(user) => setValue(user)} />

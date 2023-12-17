@@ -16,7 +16,7 @@ import { UserContactDto } from './dto/user-contact.dto';
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
-  @Post('new')
+  @Post('add')
   create(@Body() createContactDto: CreateContactDto) {
     return this.contactService.create(createContactDto);
   }

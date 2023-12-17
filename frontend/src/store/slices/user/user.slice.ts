@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { User, UserState } from "./user.slice.types";
+import { Contact, User, UserState } from "./user.slice.types";
 
 const initialState: UserState = { profile: null, contacts: [] };
 
@@ -17,13 +17,16 @@ export const userSlice = createSlice({
         lastConnection: action.payload.lastConnection,
       };
     },
-    setUserContacts: (state, action: PayloadAction<User[]>) => {
+    setUserContacts: (state, action: PayloadAction<Contact[]>) => {
       state.contacts = action.payload;
+    },
+    addNewContact: (state, action: PayloadAction<User>) => {
+      state.contacts.push({ ...action.payload, status: "pending" });
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setUserContacts } = userSlice.actions;
+export const { setUser, setUserContacts, addNewContact } = userSlice.actions;
 
 export default userSlice.reducer;

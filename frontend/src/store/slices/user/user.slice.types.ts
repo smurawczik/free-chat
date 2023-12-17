@@ -1,3 +1,5 @@
+import { ContactResponse } from "../../../api/types";
+
 export interface User {
   id: string;
   firstName: string;
@@ -6,7 +8,9 @@ export interface User {
   lastConnection: string | null;
 }
 
+export type Contact = User & { status: ContactResponse["status"] };
+
 export type UserState = {
   profile: User | null;
-  contacts: User[];
+  contacts: Contact[];
 };
