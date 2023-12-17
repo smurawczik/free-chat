@@ -15,6 +15,9 @@ export class ContactService {
       ContactResponse[]
     >('/contact', { userId });
 
-    return userContacts.map((userContact) => userContact.contact);
+    return userContacts.map((userContact) => ({
+      ...userContact.contact,
+      status: userContact.status,
+    }));
   }
 }

@@ -5,10 +5,13 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
+import { peopleApi } from "../../../api/people";
 import { UserResponse } from "../../../api/types";
 
-export const SearchContactAutocomplete = () => {
+export const SearchContactAutocomplete: FC<{
+  onSelect: (user: UserResponse | null) => void;
+}> = ({ onSelect }) => {
   const [value, setValue] = useState<UserResponse | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<readonly UserResponse[]>([]);
@@ -16,12 +19,17 @@ export const SearchContactAutocomplete = () => {
   const fetchUsersData = useMemo(
     () =>
       debounce(
-        (
+        async (
           request: { input: string },
           callback: (results?: readonly UserResponse[]) => void
         ) => {
           // fetch data here
-          console.log("fetching data", request, callback);
+          try {
+            const peopleSearch = await peopleApi.search(request.input);
+            callback(peopleSearch);
+          } catch (error) {
+            console.log(error);
+          }
         },
         400
       ),
@@ -63,7 +71,6 @@ export const SearchContactAutocomplete = () => {
   return (
     <Autocomplete
       id="search-contact-autocomplete"
-      // sx={{ width: 300 }}
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.email
       }
@@ -77,6 +84,7 @@ export const SearchContactAutocomplete = () => {
       onChange={(_: unknown, newValue: UserResponse | null) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        onSelect(newValue);
       }}
       onInputChange={(_, newInputValue) => {
         setInputValue(newInputValue);

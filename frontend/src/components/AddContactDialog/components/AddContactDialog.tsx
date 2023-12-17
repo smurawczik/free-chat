@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setDialogState } from "../../../store/slices/ui/ui.slice";
 import { uiSelectors } from "../../../store/slices/ui/ui.slice.selectors";
 import { SearchContactAutocomplete } from "./SearchContactAutocomplete";
+import { UserResponse } from "../../../api/types";
+import { useState } from "react";
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
   padding: theme.spacing(0, 3, 2, 3),
@@ -21,6 +23,7 @@ export const AddContactDialog = () => {
   const isAddContactDialogOpen = useAppSelector(
     uiSelectors.isModalOpen("addContact")
   );
+  const [value, setValue] = useState<UserResponse | null>(null);
 
   return (
     <Dialog
@@ -44,12 +47,17 @@ export const AddContactDialog = () => {
         <form style={{ flex: 1 }}>
           <DialogTitle>Add Contact</DialogTitle>
           <DialogContent>
-            <SearchContactAutocomplete />
+            <SearchContactAutocomplete onSelect={(user) => setValue(user)} />
           </DialogContent>
           <StyledDialogActions sx={{ justifyContent: "space-between" }}>
             <span />
-            <Button type="submit" variant="contained" disableElevation>
-              Add
+            <Button
+              type="submit"
+              disabled={Boolean(!value)}
+              variant="contained"
+              disableElevation
+            >
+              Send Request
             </Button>
           </StyledDialogActions>
         </form>
