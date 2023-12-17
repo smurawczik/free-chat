@@ -5,7 +5,7 @@ import { AuthState } from "./auth.slice.types";
 const initialState: AuthState = { status: "idle" };
 
 export const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   reducers: {
     setAuthStatus: (state, action: PayloadAction<AuthState["status"]>) => {

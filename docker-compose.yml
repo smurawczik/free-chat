@@ -1,5 +1,36 @@
 version: '3.8'
 services:
+  frontend:
+    container_name: app
+    image: app
+    build:
+      context: ./frontend
+      target: debug
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - database
+      - users
+      - orchestrator
+  orchestrator:
+    container_name: orchestrator
+    image: orchestrator
+    build:
+      context: ./backend/orchestrator
+      target: debug
+    ports:
+      - 3000:3000
+    environment:
+      - USER_SERVICE_HOST=users
+    volumes:
+      - ./backend/orchestrator:/orchestrator
+      - /orchestrator/node_modules
+    depends_on:
+      - users
+      - database
   users:
     container_name: users
     image: users
@@ -15,22 +46,7 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - database
-  orchestrator:
-    container_name: orchestrator
-    image: orchestrator
-    build:
-      context: ./backend/orchestrator
-      target: debug
-    ports:
-      - 3000:3000
-    environment:
-      - USER_SERVICE_HOST=users
-    volumes:
-      - ./backend/orchestrator:/orchestrator
-      - /orchestrator/node_modules
-    depends_on:
-      - database      
+      - database  
 
   database:
     image: postgres

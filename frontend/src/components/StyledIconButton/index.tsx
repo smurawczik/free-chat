@@ -11,13 +11,17 @@ export const PrimaryIconButton = styled(IconButton)(() => ({
   },
 }));
 
-export const StyledIconButton: FC<PropsWithChildren<{ tooltip?: string }>> = ({
-  tooltip = "",
-  children,
-}) => {
+export const StyledIconButton: FC<
+  PropsWithChildren<{ tooltip?: string; onClick?: () => void }>
+> = ({ tooltip = "", onClick, children }) => {
   return (
     <Tooltip title={tooltip} arrow>
-      <PrimaryIconButton size="small" color="primary" aria-label={tooltip}>
+      <PrimaryIconButton
+        size="small"
+        color="primary"
+        aria-label={tooltip}
+        onClick={onClick}
+      >
         {children}
       </PrimaryIconButton>
     </Tooltip>

@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { AddContact } from "../../AddContact";
 
 export const NoContacts = () => {
   return (
@@ -12,7 +13,7 @@ export const NoContacts = () => {
       pl={1}
     >
       <Typography variant="body1" color="white" fontSize={20} fontWeight={100}>
-        No contacts - Add new ones
+        No contacts <AddContact tooltip="Add new contacts" />
       </Typography>
     </Box>
   );

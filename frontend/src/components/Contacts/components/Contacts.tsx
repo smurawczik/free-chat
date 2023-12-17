@@ -5,23 +5,25 @@ import { useAppSelector } from "../../../store/hooks";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
 import { Contact } from "./Contact";
 import { NoContacts } from "./NoContacts";
+import { AddContactDialog } from "../../AddContactDialog";
 
 export const Contacts = () => {
   useUserContacts();
 
   const contacts = useAppSelector(userSelectors.userContacts);
 
-  if (!contacts?.length) {
-    return <NoContacts />;
-  }
-
   return (
     <Box>
-      <List dense>
-        {contacts.map((contact) => (
-          <Contact key={contact.id} contact={contact} />
-        ))}
-      </List>
+      <AddContactDialog />
+      {!contacts?.length ? (
+        <NoContacts />
+      ) : (
+        <List dense>
+          {contacts.map((contact) => (
+            <Contact key={contact.id} contact={contact} />
+          ))}
+        </List>
+      )}
     </Box>
   );
 };
