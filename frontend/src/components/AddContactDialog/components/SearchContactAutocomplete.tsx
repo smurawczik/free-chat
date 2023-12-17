@@ -13,7 +13,7 @@ export const SearchContactAutocomplete = () => {
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<readonly UserResponse[]>([]);
 
-  const fetch = useMemo(
+  const fetchUsersData = useMemo(
     () =>
       debounce(
         (
@@ -36,26 +36,29 @@ export const SearchContactAutocomplete = () => {
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results?: readonly UserResponse[]) => {
-      if (active) {
-        let newOptions: readonly UserResponse[] = [];
+    fetchUsersData(
+      { input: inputValue },
+      (results?: readonly UserResponse[]) => {
+        if (active) {
+          let newOptions: readonly UserResponse[] = [];
 
-        if (value) {
-          newOptions = [value];
+          if (value) {
+            newOptions = [value];
+          }
+
+          if (results) {
+            newOptions = [...newOptions, ...results];
+          }
+
+          setOptions(newOptions);
         }
-
-        if (results) {
-          newOptions = [...newOptions, ...results];
-        }
-
-        setOptions(newOptions);
       }
-    });
+    );
 
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValue, fetchUsersData]);
 
   return (
     <Autocomplete
