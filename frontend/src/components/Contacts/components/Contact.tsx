@@ -1,12 +1,12 @@
-import { ListItemAvatar, ListItemText } from "@mui/material";
+import { ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { parseISO } from "date-fns";
 import { FC } from "react";
-import { User } from "../../../store/slices/user/user.slice.types";
+import type { Contact as ContactType } from "../../../store/slices/user/user.slice.types";
 import { StyledAvatar } from "./StyledAvatar";
-import { StyledListItem } from "./StyledListItem";
 import { StyledBadge } from "./StyledBadge";
+import { StyledListItem } from "./StyledListItem";
 
-export const Contact: FC<{ contact: User }> = ({ contact }) => {
+export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
   const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
   const parsedDate = parseISO(contact.lastConnection ?? "");
@@ -14,28 +14,38 @@ export const Contact: FC<{ contact: User }> = ({ contact }) => {
   const connected30MinAgo = parsedDate > thirtyMinutesAgo;
   const connected10MinAgo = parsedDate > tenMinutesAgo;
 
+  const isPending = contact.status === "pending";
+
   return (
     <StyledListItem>
-      <ListItemAvatar>
-        <StyledBadge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          variant="dot"
-          online={connected10MinAgo}
-          away={connected30MinAgo}
-        >
-          <StyledAvatar>
-            {contact.firstName[0]}
-            {contact.lastName[0]}
-          </StyledAvatar>
-        </StyledBadge>
-      </ListItemAvatar>
-      <ListItemText
-        primary={`${contact.firstName} ${contact.lastName}`}
-        secondary={
-          connected10MinAgo ? "Online" : connected30MinAgo ? "Away" : "Offline"
-        }
-      />
+      <ListItemButton disabled={isPending}>
+        <ListItemAvatar>
+          <StyledBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            variant="dot"
+            online={isPending ? false : connected10MinAgo}
+            away={isPending ? false : connected30MinAgo}
+          >
+            <StyledAvatar>
+              {contact.firstName[0]}
+              {contact.lastName[0]}
+            </StyledAvatar>
+          </StyledBadge>
+        </ListItemAvatar>
+        <ListItemText
+          primary={`${contact.firstName} ${contact.lastName}`}
+          secondary={
+            isPending
+              ? "Offline - Pending contact request"
+              : connected10MinAgo
+              ? "Online"
+              : connected30MinAgo
+              ? "Away"
+              : "Offline"
+          }
+        />
+      </ListItemButton>
     </StyledListItem>
   );
 };
