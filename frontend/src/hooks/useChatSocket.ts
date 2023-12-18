@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 
 export const useChatSocket = () => {
   const socketAttached = useRef<boolean>(false);
-
-  // const currentConversation = useAppSelector(chatSelectors.currentConversation);
 
   useEffect(() => {
     if (socketAttached.current) {
@@ -12,27 +11,27 @@ export const useChatSocket = () => {
 
     socketAttached.current = true;
 
-    // connect socket
-    const socket = new WebSocket("ws://localhost:8080");
-
-    // listen for messages
-    socket.onopen = function () {
+    const socket = io("http://localhost:3000");
+    socket.on("connect", function () {
       console.log("Connected");
-      socket.send(
-        JSON.stringify({
-          event: "events",
-          data: "test",
-        })
-      );
-    };
 
-    socket.onmessage = function (response: MessageEvent<string>) {
-      const jsonData = JSON.parse(response.data) as {
-        event: string;
-        data: string;
-      };
-      console.log("client data", jsonData.event, jsonData.data);
-    };
+      socket.emit("events", { test: "test" });
+      socket.emit("identity", 0, (response: number) =>
+        console.log("Identity:", response)
+      );
+    });
+    socket.on("evento", function (data) {
+      console.log("evento", data);
+    });
+    socket.on("events", function (data) {
+      console.log("event", data);
+    });
+    socket.on("exception", function (data) {
+      console.log("event", data);
+    });
+    socket.on("disconnect", function () {
+      console.log("Disconnected");
+    });
 
     return () => {
       // socket.close();

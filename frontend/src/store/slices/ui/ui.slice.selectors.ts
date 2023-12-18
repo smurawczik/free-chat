@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { UIDialogs } from "./ui.slice.types";
+import { UIDialogs, UINavs } from "./ui.slice.types";
 
 const uiSelector = createSelector(
   (state: RootState) => state,
@@ -10,4 +10,6 @@ const uiSelector = createSelector(
 export const uiSelectors = {
   isModalOpen: (key: UIDialogs) =>
     createSelector(uiSelector, (state) => Boolean(state.dialogs[key])),
+  isNavOpen: (key: UINavs) =>
+    createSelector(uiSelector, (state) => Boolean(state.navs[key])),
 };

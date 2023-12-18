@@ -1,10 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { UIDialogs, UIState } from "./ui.slice.types";
+import { UIDialogs, UINavs, UIState } from "./ui.slice.types";
 
 const initialState: UIState = {
   dialogs: {
     addContact: false,
+  },
+  navs: {
+    contactInfo: false,
   },
 };
 
@@ -17,6 +20,12 @@ export const uiSlice = createSlice({
       action: PayloadAction<{ name: UIDialogs; status: boolean }>
     ) => {
       state.dialogs[action.payload.name] = action.payload.status;
+    },
+    setNavState: (
+      state,
+      action: PayloadAction<{ name: UINavs; status: boolean }>
+    ) => {
+      state.navs[action.payload.name] = action.payload.status;
     },
   },
 });
