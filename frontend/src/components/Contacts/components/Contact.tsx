@@ -5,8 +5,14 @@ import type { Contact as ContactType } from "../../../store/slices/user/user.sli
 import { StyledAvatar } from "./StyledAvatar";
 import { StyledBadge } from "./StyledBadge";
 import { StyledListItem } from "./StyledListItem";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { setConversation } from "../../../store/slices/chat/chat.slice";
+import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
 
 export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(userSelectors.userProfile);
+
   const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
   const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
   const parsedDate = parseISO(contact.lastConnection ?? "");
@@ -17,7 +23,22 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const isPending = contact.status === "pending";
 
   return (
-    <StyledListItem>
+    <StyledListItem
+      onClick={() => {
+        if (!user?.id) return;
+
+        dispatch(
+          setConversation({
+            _id: "",
+            messages: [],
+            users: {
+              to: contact.id,
+              from: user.id,
+            },
+          })
+        );
+      }}
+    >
       <ListItemButton disabled={isPending}>
         <ListItemAvatar>
           <StyledBadge

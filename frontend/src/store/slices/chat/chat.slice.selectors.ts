@@ -8,4 +8,8 @@ const chatSelector = createSelector(
 
 export const chatSelectors = {
   hasChat: createSelector(chatSelector, (chat) => !!chat.conversation),
+  currentConversation: createSelector(
+    chatSelector,
+    (chat) => chat.conversation
+  ),
 };

@@ -1,3 +1,0 @@
-docker run --name chat-dev-conversations -e MONGO_INITDB_ROOT_PASSWORD=root -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_DATABASE=chat-dev-conversations -p 27017:27017 -d mongo
-
-mongosh -u root -p root
