@@ -11,7 +11,7 @@ export const useChatSocket = () => {
 
     socketAttached.current = true;
 
-    const socket = io("http://localhost:3000");
+    const socket = io("http://localhost:3033");
     socket.on("connect", function () {
       console.log("Connected");
 
@@ -19,6 +19,9 @@ export const useChatSocket = () => {
       socket.emit("identity", 0, (response: number) =>
         console.log("Identity:", response)
       );
+    });
+    socket.on("handshake", function (data) {
+      console.log("handshake", data);
     });
     socket.on("evento", function (data) {
       console.log("evento", data);
