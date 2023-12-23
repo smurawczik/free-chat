@@ -35,19 +35,25 @@ export class ChatSingleton {
       console.log(message);
     });
 
-    this.socket.on("joined-chat-room", () => {
-      console.log("Joined chat room");
+    this.socket.on("joined-chat-room", ({ roomId }) => {
+      console.log("Joined chat room", roomId);
       this.socketConnectedToRoom = true;
     });
 
-    this.socket.on("left-chat-room", () => {
-      console.log("Left chat room");
+    this.socket.on("left-chat-room", ({ roomId }) => {
+      console.log("Left chat room", roomId);
       this.socketConnectedToRoom = false;
     });
   }
 
   private getIsSocketConnectedToRoom() {
     return this.socketConnectedToRoom;
+  }
+
+  public handleMessageReceived(
+    callback: ({ message }: { message: string }) => void
+  ) {
+    this.socket.on("receive-message", callback);
   }
 
   public joinRoom(roomId: string) {

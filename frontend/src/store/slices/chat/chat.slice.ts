@@ -12,10 +12,15 @@ export const chatSlice = createSlice({
     setConversation: (state, action: PayloadAction<ChatData>) => {
       state.conversation = action.payload;
     },
+    addMessage: (state, action: PayloadAction<ChatData["messages"][0]>) => {
+      if (state.conversation) {
+        state.conversation.messages.push(action.payload);
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setConversation } = chatSlice.actions;
+export const { setConversation, addMessage } = chatSlice.actions;
 
 export default chatSlice.reducer;

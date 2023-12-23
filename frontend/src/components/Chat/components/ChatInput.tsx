@@ -2,6 +2,9 @@ import { SendRounded } from "@mui/icons-material";
 import { Box, IconButton, styled } from "@mui/material";
 import { deepOrange, deepPurple, grey } from "@mui/material/colors";
 import { useState } from "react";
+import { ChatSingleton } from "../../../helpers/ChatSingleton";
+import { useAppDispatch } from "../../../store/hooks";
+import { chatThunks } from "../../../store/slices/chat/chat.slice.thunks";
 
 const StyledChatInput = styled("input")(() => ({
   width: "100%",
@@ -29,20 +32,22 @@ const StyledIconButton = styled(IconButton)(() => ({
   },
 }));
 
+const chatInstance = ChatSingleton.getInstance();
+
 export const ChatInput = () => {
+  const dispatch = useAppDispatch();
   const [message, setMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
-    setIsTyping(true);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (message.trim() === "") return;
     setMessage("");
-    setIsTyping(false);
+    chatInstance.sendMessage(message);
+    dispatch(chatThunks.sendChatMessage({ message }));
   };
 
   return (

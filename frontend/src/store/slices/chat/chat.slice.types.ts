@@ -1,6 +1,6 @@
 export type ChatMessage = {
   id: string;
-  sender: ChatParticipant;
+  userId: string;
   message: string;
   timestamp: string;
 };

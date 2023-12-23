@@ -33,7 +33,7 @@ export interface ContactRequest {
 
 export interface MessageResponse {
   id: string;
-  sender: UserResponse;
+  userId: string;
   message: string;
   timestamp: string;
 }
