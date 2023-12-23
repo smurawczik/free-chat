@@ -30,3 +30,22 @@ export interface ContactResponse {
 export interface ContactRequest {
   userId: string;
 }
+
+export interface MessageResponse {
+  id: string;
+  sender: UserResponse;
+  message: string;
+  timestamp: string;
+}
+
+export interface ConversationRequest {
+  firstParticipant: string;
+  secondParticipant: string;
+  conversationId?: string;
+}
+
+export interface ConversationResponse {
+  id: string;
+  participants: [UserResponse, UserResponse];
+  messages: MessageResponse[];
+}

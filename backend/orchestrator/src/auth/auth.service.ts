@@ -63,17 +63,17 @@ export class AuthService {
     const { password, ...user } = data;
     noop.apply(this, [password]);
 
-    await this.jwtSignUser(loginUserDto.email, loginUserDto.password, response);
+    await this.jwtSignUser(user.id, loginUserDto.password, response);
 
     return user;
   }
 
   async jwtSignUser(
-    email: string,
+    id: string,
     password: string,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const auth = await this.signIn(email, password);
+    const auth = await this.signIn(id, password);
 
     response.cookie('access-token', auth.access_token, {
       httpOnly: true,

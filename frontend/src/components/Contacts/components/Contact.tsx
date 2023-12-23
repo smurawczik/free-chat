@@ -8,6 +8,7 @@ import { StyledListItem } from "./StyledListItem";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setConversation } from "../../../store/slices/chat/chat.slice";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
+import { chatApi } from "../../../api/chat";
 
 export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const dispatch = useAppDispatch();
@@ -22,23 +23,27 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
 
   const isPending = contact.status === "pending";
 
-  return (
-    <StyledListItem
-      onClick={() => {
-        if (!user?.id) return;
+  const getOrCreateConversation = async () => {
+    if (!user?.id) return;
 
-        dispatch(
-          setConversation({
-            _id: "",
-            messages: [],
-            users: {
-              to: contact.id,
-              from: user.id,
-            },
-          })
-        );
-      }}
-    >
+    try {
+      const conversation = await chatApi.getOrCreateConversation({
+        firstParticipant: user.id,
+        secondParticipant: contact.id,
+      });
+
+      console.log(conversation);
+
+      if (conversation) {
+        dispatch(setConversation({ ...conversation }));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <StyledListItem onClick={getOrCreateConversation}>
       <ListItemButton disabled={isPending}>
         <ListItemAvatar>
           <StyledBadge

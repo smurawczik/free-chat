@@ -17,8 +17,6 @@ export class PeopleService {
     const likeCondition = Like(`%${query}%`);
     const notUserIdCondition = Not(userId);
 
-    console.log({ likeCondition, notUserIdCondition, userId });
-
     const userContactIds = (
       await this.contactService.findUserContacts(userId)
     ).map((contact) => contact.contact.id);

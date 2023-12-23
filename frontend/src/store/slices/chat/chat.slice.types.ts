@@ -1,17 +1,20 @@
-export interface ChatMessage {
-  _id: string;
-  from: string;
-  to: string;
+export type ChatMessage = {
+  id: string;
+  sender: ChatParticipant;
   message: string;
-  createdAt: string;
-}
+  timestamp: string;
+};
+
+export type ChatParticipant = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 export interface ChatData {
-  _id: string;
-  users: {
-    from: string;
-    to: string;
-  };
+  id: string;
+  participants: [ChatParticipant, ChatParticipant];
   messages: ChatMessage[];
 }
 

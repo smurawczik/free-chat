@@ -60,3 +60,17 @@ services:
       POSTGRES_DB: chat-dev
     ports:
       - 5432:5432
+
+  chat-database:
+    image: mysql
+    container_name: chat-database
+    restart: on-failure
+    volumes:
+      - ./backend/chat-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_DATABASE: conversations
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    ports:
+      - 3306:3306

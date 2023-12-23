@@ -60,8 +60,10 @@ export class UserService {
     return this.usersRepository.find();
   }
 
-  findOne(email: string) {
-    return this.usersRepository.findOne({ where: { email } });
+  findOne(id: string) {
+    return this.usersRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
