@@ -7,7 +7,11 @@ export class ChatSingleton {
   private roomId: string = "";
 
   private constructor() {
-    this.socket = io("http://localhost:3033");
+    this.socket = io("http://localhost:3033", {
+      retries: 3,
+      reconnectionAttempts: 3,
+      reconnection: true,
+    });
     this.socket.on("connect", () => {
       console.log("Connected");
     });
