@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
-import format from "date-fns/format";
 import { FC } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import type { ChatMessage as Message } from "../../../store/slices/chat/chat.slice.types";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
+import { MessageTimestamp } from "./MessageTimestamp";
 
 export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
   message,
@@ -13,8 +13,6 @@ export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
   const isOwnMessage = message?.sender?.id === userId;
 
   if (!userId || !message?.sender) return null;
-
-  const sentHour = format(new Date(message.timestamp), "HH:mm");
 
   return (
     <Box
@@ -35,7 +33,7 @@ export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
         >
           {message.message}
         </Box>
-        {showHour && <small>{sentHour}</small>}
+        {showHour && <MessageTimestamp timestamp={message.timestamp} />}
       </Box>
     </Box>
   );

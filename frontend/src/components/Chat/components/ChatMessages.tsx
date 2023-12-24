@@ -14,21 +14,19 @@ export const ChatMessages = () => {
       {currentConversation.messages.map((message, i) => {
         // this logic needs to be updated to check if the next message is from the same user
         const messagesLength = currentConversation.messages.length - 1;
-        const nextHour = format(
-          new Date(
-            currentConversation.messages?.[
-              i < messagesLength ? i + 1 : i
-            ].timestamp
-          ),
-          "HH:mm"
-        );
+        const nextMessage =
+          currentConversation.messages?.[i < messagesLength ? i + 1 : i];
+
+        const isSamerUser = nextMessage?.sender.id === message.sender.id;
+
+        const nextHour = format(new Date(nextMessage.timestamp), "HH:mm");
         const hour = format(new Date(message.timestamp), "HH:mm");
 
         return (
           <ChatMessage
             key={`${message.id}-${message.timestamp}-${i}`}
             message={message}
-            showHour={nextHour !== hour || i === messagesLength}
+            showHour={nextHour !== hour || !isSamerUser || i === messagesLength}
           />
         );
       })}
