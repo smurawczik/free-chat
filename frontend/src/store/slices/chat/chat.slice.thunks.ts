@@ -14,14 +14,19 @@ const sendChatMessage = createAsyncThunk<
     state: RootState;
   }
 >("chat/sendChatMessage", ({ message }, { getState, dispatch }) => {
-  const userId = getState().user.profile?.id;
+  const userProfile = getState().user.profile;
 
-  if (!userId) {
+  if (!userProfile) {
     return;
   }
 
   const chatMessage: ChatMessage = {
-    userId,
+    sender: {
+      id: userProfile.id,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
+      email: userProfile.email,
+    },
     message,
     timestamp: new Date().toUTCString(),
   };

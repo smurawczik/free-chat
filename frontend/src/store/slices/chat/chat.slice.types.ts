@@ -1,6 +1,8 @@
+import { UserResponse } from "../../../api/types";
+
 export type ChatMessage = {
   id?: string;
-  userId: string;
+  sender: Omit<UserResponse, "lastConnection">;
   message: string;
   timestamp: string;
 };
