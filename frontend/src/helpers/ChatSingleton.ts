@@ -1,27 +1,11 @@
 import { Socket, io } from "socket.io-client";
+import { ChatMessage } from "../store/slices/chat/chat.slice.types";
 
 export class ChatSingleton {
   private static instance: ChatSingleton;
   private socket: Socket;
   private socketConnectedToRoom: boolean = false;
   private roomId: string = "";
-
-  private constructor() {
-    this.socket = io("http://localhost:3033", {
-      retries: 3,
-      reconnectionAttempts: 3,
-      reconnection: true,
-    });
-    this.socket.on("connect", () => {
-      console.log("Connected");
-    });
-
-    this.socket.on("disconnect", () => {
-      console.log("Disconnected");
-    });
-
-    this.attachListeners();
-  }
 
   public static getInstance(): ChatSingleton {
     console.log("Getting instance");
@@ -31,6 +15,24 @@ export class ChatSingleton {
     }
 
     return ChatSingleton.instance;
+  }
+
+  private constructor() {
+    this.socket = io("http://localhost:3033", {
+      // retries: 3,
+      // reconnectionAttempts: 3,
+      // reconnection: true,
+    });
+
+    this.socket.on("connect", () => {
+      console.log("Connected");
+    });
+
+    this.socket.on("disconnect", () => {
+      console.log("Disconnected");
+    });
+
+    this.attachListeners();
   }
 
   private attachListeners() {
@@ -54,8 +56,8 @@ export class ChatSingleton {
     return this.socketConnectedToRoom;
   }
 
-  public handleMessageReceived(
-    callback: ({ message }: { message: string }) => void
+  public onMessageReceived(
+    callback: ({ message }: { message: ChatMessage }) => void
   ) {
     this.socket.on("receive-message", callback);
   }
@@ -73,12 +75,13 @@ export class ChatSingleton {
     this.socket.emit("leave-chat-room", { roomId: this.roomId });
   }
 
-  public sendMessage(message: string) {
+  public sendMessage(message: ChatMessage) {
     if (this.getIsSocketConnectedToRoom()) {
-      this.socket.emit("send-message", {
+      const chatMessageData = {
         roomId: this.roomId,
-        message,
-      });
+        ...message,
+      };
+      this.socket.emit("send-message", chatMessageData);
     }
   }
 }

@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../store";
 import { addMessage } from "./chat.slice";
+import { ChatMessage } from "./chat.slice.types";
+import { ChatSingleton } from "../../../helpers/ChatSingleton";
+
+const chatInstance = ChatSingleton.getInstance();
 
 const sendChatMessage = createAsyncThunk<
   void,
@@ -12,16 +16,19 @@ const sendChatMessage = createAsyncThunk<
 >("chat/sendChatMessage", ({ message }, { getState, dispatch }) => {
   const userId = getState().user.profile?.id;
 
-  dispatch(
-    addMessage({
-      id: "",
-      userId: userId!,
-      message,
-      timestamp: new Date().toISOString(),
-    })
-  );
+  if (!userId) {
+    return;
+  }
 
-  return;
+  const chatMessage: ChatMessage = {
+    userId,
+    message,
+    timestamp: new Date().toUTCString(),
+  };
+
+  chatInstance.sendMessage(chatMessage);
+
+  dispatch(addMessage(chatMessage));
 });
 
 export const chatThunks = {

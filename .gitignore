@@ -38,3 +38,4 @@ lerna-debug.log*
 
 /backend/data
 /backend/chat-data
+/backend/redis-queues-data

@@ -1,10 +1,11 @@
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import { ChatInput } from "./ChatInput";
-import { ChatSingleton } from "../../../helpers/ChatSingleton";
 import { useEffect, useRef } from "react";
-import { useAppSelector } from "../../../store/hooks";
+import { ChatSingleton } from "../../../helpers/ChatSingleton";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
+import { ChatInput } from "./ChatInput";
+import { ChatMessages } from "./ChatMessages";
+import { addMessage } from "../../../store/slices/chat/chat.slice";
 
 const StyledChatContainer = styled("div")(() => ({
   flex: 0.7,
@@ -17,6 +18,7 @@ const chatInstance = ChatSingleton.getInstance();
 
 export const Chat = () => {
   const chatInstantiated = useRef(false);
+  const dispatch = useAppDispatch();
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
 
   useEffect(() => {
@@ -24,16 +26,17 @@ export const Chat = () => {
       chatInstantiated.current = true;
 
       chatInstance.joinRoom(currentConversation.id);
-      chatInstance.handleMessageReceived(({ message }) => {
+      chatInstance.onMessageReceived(({ message }) => {
+        dispatch(addMessage(message));
         console.log("message received:", message);
       });
     }
-  }, [currentConversation]);
+  }, [currentConversation, dispatch]);
 
   return (
     <StyledChatContainer>
       <div> chat header (contact details) + chat actions </div>
-      <Box flex={1}> chat messages history (infinite scroll?) </Box>
+      <ChatMessages />
       <ChatInput />
     </StyledChatContainer>
   );

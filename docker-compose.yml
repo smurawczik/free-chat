@@ -46,7 +46,9 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - database  
+      - database
+      - chat-database
+      - redis
 
   database:
     image: postgres
@@ -74,3 +76,14 @@ services:
       MYSQL_PASSWORD: docker
     ports:
       - 3306:3306
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: on-failure
+    volumes:
+      - ./backend/redis-queues-data:/data
+    ports:
+      - 6379:6379
+
+  
