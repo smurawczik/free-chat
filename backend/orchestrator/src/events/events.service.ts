@@ -11,11 +11,15 @@ export class EventsService {
     this.emitter = new EventEmitter();
   }
 
-  subscribe() {
-    return fromEvent(this.emitter, 'eventName');
+  subscribeLastConnection() {
+    return fromEvent(this.emitter, 'lastConnection');
   }
 
-  async emit(data: any) {
-    this.emitter.emit('eventName', { data });
+  async emitLastConnection(data: { userId: string; lastConnection: string }) {
+    try {
+      this.emitter.emit('lastConnection', { data });
+    } catch (error) {
+      console.log('emitLastConnection error', error);
+    }
   }
 }

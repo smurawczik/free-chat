@@ -1,14 +1,34 @@
 import { useEffect } from "react";
-import { useAppSelector } from "../store/hooks";
-import { userSelectors } from "../store/slices/user/user.slice.selectors";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { authSelectors } from "../store/slices/auth/auth.slice.selectors";
+import { updateContactLastConnection } from "../store/slices/user/user.slice";
 
 export const useContactLastConnectionSSE = () => {
-  const userId = useAppSelector(userSelectors.userProfile)?.id;
+  const dispatch = useAppDispatch();
+  const authUser = useAppSelector(authSelectors.authIsSucceeded);
 
   useEffect(() => {
-    const subscription = new EventSource(`http://localhost:3000/events/events`);
+    if (!authUser) {
+      return;
+    }
+
+    const subscription = new EventSource(
+      `${import.meta.env.VITE_BACKEND_URL as string}/events/subscribe`
+    );
     subscription.onmessage = (message) => {
-      console.log({ message });
+      const data = JSON.parse(message.data) as {
+        userId: string;
+        lastConnection: string;
+      };
+
+      if (data.lastConnection) {
+        dispatch(
+          updateContactLastConnection({
+            contactId: data.userId,
+            lastConnection: data.lastConnection,
+          })
+        );
+      }
     };
     subscription.onerror = (message) => {
       console.log({ message });
@@ -17,26 +37,5 @@ export const useContactLastConnectionSSE = () => {
     return () => {
       subscription.close();
     };
-  }, []);
-
-  useEffect(() => {
-    const postToEvent = async () => {
-      if (!userId) {
-        return;
-      }
-
-      try {
-        // const response = await usersApi.emitSSETest(userId);
-        // console.log({ response });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const interval = setInterval(postToEvent, 10000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [userId]);
+  }, [authUser, dispatch]);
 };

@@ -44,13 +44,15 @@ export const usersApi = {
     );
     return response.data;
   },
-  emitSSETest: async (userId: string) => {
+  updateUserLastConnectionEvent: async (
+    userId: string,
+    lastConnection: string
+  ) => {
     const response = await axiosInstance.post(
-      "/events/emit",
+      "/events/last-connection-event",
       {
         userId,
-        event: "test",
-        data: "test",
+        lastConnection,
       },
       {
         withCredentials: true,

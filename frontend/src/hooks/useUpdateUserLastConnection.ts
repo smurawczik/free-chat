@@ -16,6 +16,9 @@ export const useUpdateUserLastConnection = () => {
           const updatedLastConnectionResponse =
             await usersApi.updateUserLastConnection(userId, lastConnection);
 
+          // dispatch a post that triggers the SSE event
+          usersApi.updateUserLastConnectionEvent(userId, lastConnection);
+
           if (updatedLastConnectionResponse.lastConnection) {
             dispatch(
               updateLastConnection(updatedLastConnectionResponse.lastConnection)
@@ -27,7 +30,7 @@ export const useUpdateUserLastConnection = () => {
       }
     };
 
-    const updateInterval = setInterval(_updateUserLastConnection, 30000);
+    const updateInterval = setInterval(_updateUserLastConnection, 10000);
 
     return () => {
       clearInterval(updateInterval);

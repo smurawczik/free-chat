@@ -6,16 +6,16 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   Res,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './entities/user.entity';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {

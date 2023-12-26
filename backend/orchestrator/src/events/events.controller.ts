@@ -1,18 +1,24 @@
-import { Body, Controller, Post, Sse } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Sse } from '@nestjs/common';
 import { EventsService } from './events.service';
+import { Response } from 'express';
 
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
-  @Sse('events')
-  events() {
-    return this.eventsService.subscribe();
+  @Sse('subscribe')
+  subscribe() {
+    return this.eventsService.subscribeLastConnection();
   }
 
-  @Post('emit')
-  async emit(@Body() body: any) {
-    this.eventsService.emit({ emitting: new Date().toISOString(), ...body });
-    return { ok: true };
+  @Post('last-connection-event')
+  async lastConnection(
+    @Res() res: Response,
+    @Body() body: { userId: string; lastConnection: string },
+  ) {
+    // Emit the event to the frontend with new connection data
+    this.eventsService.emitLastConnection(body);
+
+    return res.status(HttpStatus.OK).send({ message: 'OK' });
   }
 }

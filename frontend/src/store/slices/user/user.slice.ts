@@ -28,11 +28,32 @@ export const userSlice = createSlice({
         state.profile.lastConnection = action.payload;
       }
     },
+    updateContactLastConnection: (
+      state,
+      action: PayloadAction<{ contactId: string; lastConnection: string }>
+    ) => {
+      const { contactId, lastConnection } = action.payload;
+
+      if (contactId === state.profile?.id) return;
+
+      const contact = state.contacts.find(
+        (contact) => contact.id === contactId
+      );
+
+      if (contact) {
+        contact.lastConnection = new Date(lastConnection).toISOString();
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setUserContacts, addNewContact, updateLastConnection } =
-  userSlice.actions;
+export const {
+  setUser,
+  setUserContacts,
+  addNewContact,
+  updateLastConnection,
+  updateContactLastConnection,
+} = userSlice.actions;
 
 export default userSlice.reducer;
