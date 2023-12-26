@@ -6,6 +6,7 @@ import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
 import { addMessage } from "../../../store/slices/chat/chat.slice";
+import { ChatHeader } from "./ChatHeader";
 
 const StyledChatContainer = styled("div")(() => ({
   flex: 0.7,
@@ -25,6 +26,7 @@ export const Chat = () => {
     if (currentConversation && !chatInstantiated.current) {
       chatInstantiated.current = true;
 
+      chatInstance.connect();
       chatInstance.joinRoom(currentConversation.id);
       chatInstance.onMessageReceived(({ message }) => {
         dispatch(addMessage(message));
@@ -35,7 +37,7 @@ export const Chat = () => {
 
   return (
     <StyledChatContainer>
-      <div> chat header (contact details) + chat actions </div>
+      <ChatHeader />
       <ChatMessages />
       <ChatInput />
     </StyledChatContainer>

@@ -1,16 +1,26 @@
-import Box from "@mui/material/Box";
+import format from "date-fns/format";
+import { groupBy } from "lodash";
 import { useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 import { ChatMessage } from "./ChatMessage";
-import format from "date-fns/format";
+import { ChatMessagesContainer } from "./ChatMessagesContainer";
 
 export const ChatMessages = () => {
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
 
   if (!currentConversation) return null;
 
+  const groupedMessages = groupBy(currentConversation.messages, (message) => {
+    return [
+      format(new Date(message.timestamp), "dd/MM/yyyy HH:mm"),
+      message.sender.id,
+    ];
+  });
+
+  console.log({ groupedMessages });
+
   return (
-    <Box flex={1} display="flex" flexDirection="column" px={1} py={0.5}>
+    <ChatMessagesContainer>
       {currentConversation.messages.map((message, i) => {
         // this logic needs to be updated to check if the next message is from the same user
         const messagesLength = currentConversation.messages.length - 1;
@@ -30,6 +40,6 @@ export const ChatMessages = () => {
           />
         );
       })}
-    </Box>
+    </ChatMessagesContainer>
   );
 };

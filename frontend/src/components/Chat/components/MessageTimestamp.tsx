@@ -1,11 +1,8 @@
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { format, intlFormatDistance } from "date-fns";
 import { FC, useEffect, useState } from "react";
 
 const formatTimeToDistance = (timestamp: string) => {
-  return formatDistanceToNow(new Date(timestamp), {
-    addSuffix: true,
-    includeSeconds: true,
-  });
+  return intlFormatDistance(new Date(timestamp), new Date());
 };
 
 export const MessageTimestamp: FC<{ timestamp: string }> = ({ timestamp }) => {
@@ -25,5 +22,5 @@ export const MessageTimestamp: FC<{ timestamp: string }> = ({ timestamp }) => {
 
   if (!formattedTime) return null;
 
-  return <small>{formattedTime}</small>;
+  return <small>{format(new Date(timestamp), "HH:mm aaa")}</small>;
 };

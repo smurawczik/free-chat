@@ -32,8 +32,6 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
         secondParticipant: contact.id,
       });
 
-      console.log(conversation);
-
       if (conversation) {
         dispatch(setConversation({ ...conversation }));
       }

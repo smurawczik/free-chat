@@ -19,9 +19,7 @@ export class ChatSingleton {
 
   private constructor() {
     this.socket = io("http://localhost:3033", {
-      // retries: 3,
-      // reconnectionAttempts: 3,
-      // reconnection: true,
+      autoConnect: false,
     });
 
     this.socket.on("connect", () => {
@@ -54,6 +52,16 @@ export class ChatSingleton {
 
   private getIsSocketConnectedToRoom() {
     return this.socketConnectedToRoom;
+  }
+
+  public isConnected() {
+    return this.socket.connected;
+  }
+
+  public connect() {
+    if (!this.socket.connected) {
+      this.socket.connect();
+    }
   }
 
   public onMessageReceived(
