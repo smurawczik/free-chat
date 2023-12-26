@@ -4,12 +4,11 @@ import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 
-const StyledChatMessagesContainer = styled(Box)(() => ({
+const StyledChatMessagesContainer = styled(Box)(({ theme }) => ({
   flex: 1,
   display: "flex",
   flexDirection: "column",
-  px: 1,
-  py: 1,
+  padding: theme.spacing(1),
   height: "100%",
   overflow: "auto",
 }));

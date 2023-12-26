@@ -7,11 +7,12 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 import { noop } from 'rxjs';
 import { UserDto } from 'src/user/dto/user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
-import { Response } from 'express';
+import { VerifyUserDto } from './dto/verify-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -79,5 +80,13 @@ export class AuthService {
       httpOnly: true,
       expires: auth.expiration_date,
     });
+  }
+
+  async verifyUser(verifyUserDto: VerifyUserDto) {
+    const user = this.jwtService.verify(verifyUserDto.accessToken, {
+      secret: this.configService.get<string>('JWT_SECRET'),
+    });
+
+    return user;
   }
 }

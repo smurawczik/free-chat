@@ -20,6 +20,7 @@ export class ChatSingleton {
   private constructor() {
     this.socket = io("http://localhost:3033", {
       autoConnect: false,
+      withCredentials: true,
     });
 
     this.socket.on("connect", () => {
