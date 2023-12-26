@@ -10,4 +10,8 @@ export const userSelectors = {
   hasUser: createSelector(userSelector, (user) => user.profile !== null),
   userProfile: createSelector(userSelector, (user) => user.profile),
   userContacts: createSelector(userSelector, (user) => user.contacts),
+  userContactById: (contactId: string) =>
+    createSelector(userSelector, (user) =>
+      user.contacts.find((contact) => contact.id === contactId)
+    ),
 };

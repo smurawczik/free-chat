@@ -1,29 +1,15 @@
 import parseISO from "date-fns/parseISO";
-import { FC, useEffect, useState } from "react";
-import { usersApi } from "../../../api/users";
+import { FC } from "react";
+import { useAppSelector } from "../../../store/hooks";
+import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
 import { StyledConnectionBadge } from "./StyledLastConnectionBadge";
 
 export const LastConnectionBadge: FC<{ contactId: string }> = ({
   contactId,
 }) => {
-  const [lastConnection, setLastConnection] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchLastConnection = async () => {
-      try {
-        const lastConnectionResponse = await usersApi.getUserLastConnection(
-          contactId
-        );
-        if (!lastConnectionResponse?.lastConnection) return;
-
-        setLastConnection(lastConnectionResponse.lastConnection);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (contactId) fetchLastConnection();
-  }, [contactId]);
+  const lastConnection = useAppSelector(
+    userSelectors.userContactById(contactId)
+  )?.lastConnection;
 
   const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
   const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
