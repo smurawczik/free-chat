@@ -24,7 +24,7 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const isPending = contact.status === "pending";
 
   const getOrCreateConversation = async () => {
-    if (!user?.id) return;
+    if (!user?.id || isPending) return;
 
     try {
       const conversation = await chatApi.getOrCreateConversation({

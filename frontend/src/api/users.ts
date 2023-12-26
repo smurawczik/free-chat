@@ -26,4 +26,36 @@ export const usersApi = {
     });
     return response.data;
   },
+  getUserLastConnection: async (id: string) => {
+    const response = await axiosInstance.get<{
+      lastConnection?: string | null;
+    }>(`/user/${id}/last-connection`);
+    return response.data;
+  },
+  updateUserLastConnection: async (id: string, lastConnection: string) => {
+    const response = await axiosInstance.post<{
+      lastConnection?: string | null;
+    }>(
+      `/user/${id}/last-connection`,
+      {
+        lastConnection,
+      },
+      { withCredentials: true }
+    );
+    return response.data;
+  },
+  emitSSETest: async (userId: string) => {
+    const response = await axiosInstance.post(
+      "/events/emit",
+      {
+        userId,
+        event: "test",
+        data: "test",
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
 };

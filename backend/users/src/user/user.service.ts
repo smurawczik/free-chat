@@ -66,6 +66,33 @@ export class UserService {
     });
   }
 
+  async findLastConnection(
+    id: string,
+  ): Promise<{ lastConnection?: string | null }> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      select: {
+        lastConnection: true,
+      },
+    });
+    return { lastConnection: user?.lastConnection };
+  }
+
+  async updateLastConnection(
+    id: string,
+    lastConnection: string,
+  ): Promise<{ lastConnection?: string | null }> {
+    const updated = await this.usersRepository.update(id, {
+      lastConnection: new Date().toUTCString(),
+    });
+
+    if (!updated?.affected) {
+      return { lastConnection: null };
+    }
+
+    return { lastConnection };
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     console.log('updateUserDto', updateUserDto);
 

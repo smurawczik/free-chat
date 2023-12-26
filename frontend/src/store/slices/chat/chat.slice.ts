@@ -17,10 +17,14 @@ export const chatSlice = createSlice({
         state.conversation.messages.push(action.payload);
       }
     },
+    closeConversation: (state) => {
+      state.conversation = null;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setConversation, addMessage } = chatSlice.actions;
+export const { setConversation, addMessage, closeConversation } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;

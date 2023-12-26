@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ContactModule } from './contact/contact.module';
 import { PeopleModule } from './people/people.module';
+import { EventsService } from './events/events.service';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -24,8 +26,9 @@ import { PeopleModule } from './people/people.module';
     AuthModule,
     ContactModule,
     PeopleModule,
+    EventsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsService],
 })
 export class AppModule {}

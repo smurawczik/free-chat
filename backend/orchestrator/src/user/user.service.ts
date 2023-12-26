@@ -58,6 +58,32 @@ export class UserService {
     return this.httpService.axiosRef.get<User>(`/user/${id}`);
   }
 
+  async findLastConnection(id: string) {
+    const userLastConnectionResponse = await this.httpService.axiosRef.get<{
+      lastConnection?: string | null;
+    }>(`/user/${id}/last-connection`);
+
+    if (!userLastConnectionResponse.data) {
+      throw new HttpException('Error', 404);
+    }
+
+    return userLastConnectionResponse.data;
+  }
+
+  async updateLastConnection(id: string, lastConnection: string) {
+    const userLastConnectionResponse = await this.httpService.axiosRef.post<{
+      lastConnection?: string | null;
+    }>(`/user/${id}/last-connection`, {
+      lastConnection,
+    });
+
+    if (!userLastConnectionResponse.data) {
+      throw new HttpException('Error', 404);
+    }
+
+    return userLastConnectionResponse.data;
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     console.log('updateUserDto', updateUserDto);
 

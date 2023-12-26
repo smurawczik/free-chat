@@ -23,10 +23,16 @@ export const userSlice = createSlice({
     addNewContact: (state, action: PayloadAction<User>) => {
       state.contacts.push({ ...action.payload, status: "pending" });
     },
+    updateLastConnection: (state, action: PayloadAction<string>) => {
+      if (state.profile) {
+        state.profile.lastConnection = action.payload;
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setUserContacts, addNewContact } = userSlice.actions;
+export const { setUser, setUserContacts, addNewContact, updateLastConnection } =
+  userSlice.actions;
 
 export default userSlice.reducer;

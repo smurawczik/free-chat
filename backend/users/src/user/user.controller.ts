@@ -40,6 +40,19 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
+  @Get(':id/last-connection')
+  findLastConnection(@Param('id') id: string) {
+    return this.userService.findLastConnection(id);
+  }
+
+  @Post(':id/last-connection')
+  updateLastConnection(
+    @Param('id') id: string,
+    @Body() { lastConnection }: { lastConnection: string },
+  ) {
+    return this.userService.updateLastConnection(id, lastConnection);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
