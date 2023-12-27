@@ -17,11 +17,15 @@ export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
   return (
     <Box
       display="flex"
-      justifyContent={isOwnMessage ? "start" : "end"}
+      justifyContent={isOwnMessage ? "end" : "start"}
       pb={0.5}
       px={0.5}
     >
-      <Box display="flex" flexDirection="column">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems={isOwnMessage ? "end" : "start"}
+      >
         <Box
           sx={{
             backgroundColor: isOwnMessage ? "primary.light" : "#e5e5ea",

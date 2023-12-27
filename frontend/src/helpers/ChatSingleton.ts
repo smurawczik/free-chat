@@ -35,11 +35,6 @@ export class ChatSingleton {
   }
 
   private attachListeners() {
-    this.socket.on("message", (message) => {
-      console.log("Message received");
-      console.log(message);
-    });
-
     this.socket.on("joined-chat-room", ({ roomId }) => {
       console.log("Joined chat room", roomId);
       this.socketConnectedToRoom = true;

@@ -30,7 +30,6 @@ export const Chat = () => {
       chatInstance.joinRoom(currentConversation.id);
       chatInstance.onMessageReceived(({ message }) => {
         dispatch(addMessage(message));
-        console.log("message received:", message);
       });
     }
   }, [currentConversation, dispatch]);
