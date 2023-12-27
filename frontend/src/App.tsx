@@ -5,14 +5,12 @@ import { LeftNavigation } from "./components/LeftNavigation";
 import { QuickAccessDialog } from "./components/QuickAccessDialog";
 import { RightNavigation } from "./components/RightNavigation";
 import { useAuth } from "./hooks/useAuth";
-import { useContactLastConnectionSSE } from "./hooks/useContactLastConnectionSSE";
 import { useGlobalEvents } from "./hooks/useGlobalEvents";
 import { useAppSelector } from "./store/hooks";
 import { authSelectors } from "./store/slices/auth/auth.slice.selectors";
 
 function App() {
   useGlobalEvents();
-  useContactLastConnectionSSE();
   useAuth({ initialFetch: true });
 
   const authSuccess = useAppSelector(authSelectors.authIsSucceeded);
