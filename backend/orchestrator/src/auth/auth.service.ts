@@ -76,10 +76,21 @@ export class AuthService {
   ) {
     const auth = await this.signIn(id, password);
 
-    response.cookie('access-token', auth.access_token, {
-      httpOnly: true,
-      expires: auth.expiration_date,
-    });
+    const tokenCookieName = this.configService.get<string>('TOKEN_COOKIE_NAME');
+
+    if (tokenCookieName) {
+      response.cookie(tokenCookieName, auth.access_token, {
+        httpOnly: true,
+        expires: auth.expiration_date,
+      });
+    }
+  }
+
+  logout(@Res({ passthrough: true }) response: Response) {
+    const tokenCookieName = this.configService.get<string>('TOKEN_COOKIE_NAME');
+    if (tokenCookieName) {
+      response.clearCookie(tokenCookieName);
+    }
   }
 
   async verifyUser(verifyUserDto: VerifyUserDto) {

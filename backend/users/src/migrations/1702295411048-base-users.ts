@@ -76,6 +76,11 @@ export class BaseUsers1702295411048 implements MigrationInterface {
         user: users[0],
       }),
       queryRunner.manager.create(Contact, {
+        contact: users[0],
+        status: 'accepted',
+        user: users[2],
+      }),
+      queryRunner.manager.create(Contact, {
         contact: users[3],
         status: 'pending',
         user: users[1],

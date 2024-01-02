@@ -55,7 +55,9 @@ export class ChatSingleton {
   }
 
   public connect() {
-    if (!this.socket.connected) {
+    if (!this.isConnected()) {
+      console.log("connecting");
+
       this.socket.connect();
     }
   }
@@ -63,6 +65,7 @@ export class ChatSingleton {
   public onMessageReceived(
     callback: ({ message }: { message: ChatMessage }) => void
   ) {
+    this.socket.off("receive-message");
     this.socket.on("receive-message", callback);
   }
 

@@ -1,12 +1,12 @@
 import { styled } from "@mui/material/styles";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ChatSingleton } from "../../../helpers/ChatSingleton";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { addMessage } from "../../../store/slices/chat/chat.slice";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
+import { ChatHeader } from "./ChatHeader";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
-import { addMessage } from "../../../store/slices/chat/chat.slice";
-import { ChatHeader } from "./ChatHeader";
 
 const StyledChatContainer = styled("div")(() => ({
   flex: 0.7,
@@ -18,14 +18,11 @@ const StyledChatContainer = styled("div")(() => ({
 const chatInstance = ChatSingleton.getInstance();
 
 export const Chat = () => {
-  const chatInstantiated = useRef(false);
   const dispatch = useAppDispatch();
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
 
   useEffect(() => {
-    if (currentConversation && !chatInstantiated.current) {
-      chatInstantiated.current = true;
-
+    if (currentConversation) {
       chatInstance.connect();
       chatInstance.joinRoom(currentConversation.id);
       chatInstance.onMessageReceived(({ message }) => {

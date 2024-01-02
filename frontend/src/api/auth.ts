@@ -10,4 +10,13 @@ export const authApi = {
     );
     return response.data;
   },
+  logout: async () => {
+    const response = await axiosInstance.get<{ success: boolean }>(
+      "/auth/logout",
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
 };

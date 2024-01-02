@@ -1,5 +1,4 @@
 import format from "date-fns/format";
-import { groupBy } from "lodash";
 import { useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 import { ChatMessage } from "./ChatMessage";
@@ -9,15 +8,6 @@ export const ChatMessages = () => {
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
 
   if (!currentConversation) return null;
-
-  const groupedMessages = groupBy(currentConversation.messages, (message) => {
-    return [
-      format(new Date(message.timestamp), "dd/MM/yyyy HH:mm"),
-      message.sender.id,
-    ];
-  });
-
-  console.log({ groupedMessages });
 
   return (
     <ChatMessagesContainer>

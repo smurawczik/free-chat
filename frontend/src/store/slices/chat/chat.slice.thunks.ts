@@ -8,12 +8,12 @@ const chatInstance = ChatSingleton.getInstance();
 
 const sendChatMessage = createAsyncThunk<
   void,
-  { message: string },
+  { message: string; audioPath?: string },
   {
     dispatch: AppDispatch;
     state: RootState;
   }
->("chat/sendChatMessage", ({ message }, { getState, dispatch }) => {
+>("chat/sendChatMessage", ({ message, audioPath }, { getState, dispatch }) => {
   const userProfile = getState().user.profile;
 
   if (!userProfile) {
@@ -28,6 +28,7 @@ const sendChatMessage = createAsyncThunk<
       email: userProfile.email,
     },
     message,
+    audioPath,
     timestamp: new Date().toUTCString(),
   };
 

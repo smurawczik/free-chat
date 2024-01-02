@@ -1,14 +1,14 @@
 import { ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { parseISO } from "date-fns";
 import { FC } from "react";
+import { chatApi } from "../../../api/chat";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { setConversation } from "../../../store/slices/chat/chat.slice";
+import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
 import type { Contact as ContactType } from "../../../store/slices/user/user.slice.types";
 import { StyledAvatar } from "./StyledAvatar";
 import { StyledBadge } from "./StyledBadge";
 import { StyledListItem } from "./StyledListItem";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setConversation } from "../../../store/slices/chat/chat.slice";
-import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
-import { chatApi } from "../../../api/chat";
 
 export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const dispatch = useAppDispatch();

@@ -5,6 +5,7 @@ export type ChatMessage = {
   sender: Omit<UserResponse, "lastConnection">;
   message: string;
   timestamp: string;
+  audioPath?: string;
 };
 
 export type ChatParticipant = {
