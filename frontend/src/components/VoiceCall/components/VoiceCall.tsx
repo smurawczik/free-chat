@@ -26,6 +26,8 @@ export const VoiceCall = () => {
       ws.binaryType = "arraybuffer"; // Set binary type to 'arraybuffer'
 
       ws.addEventListener("message", async (event) => {
+        console.log("Message from server ", event.data);
+
         if (typeof event.data === "string") {
           // Handle text data
           const message = JSON.parse(event.data);
@@ -117,6 +119,8 @@ export const VoiceCall = () => {
       // Received remote audio stream
       remoteStream.current = event.streams[0];
       if (!remoteAudio.current) return;
+      console.log("receiving", remoteStream.current);
+
       remoteAudio.current.srcObject = remoteStream.current;
     };
 
@@ -143,7 +147,12 @@ export const VoiceCall = () => {
   return (
     <>
       <Box display="flex" flexDirection="column">
-        <audio style={{ width: 100 }} ref={remoteAudio} controls></audio>
+        <audio
+          style={{ width: 100 }}
+          ref={remoteAudio}
+          autoPlay
+          controls
+        ></audio>
         <audio style={{ width: 100 }} ref={localAudio} controls muted></audio>
       </Box>
       <StyledHeaderIconButton
