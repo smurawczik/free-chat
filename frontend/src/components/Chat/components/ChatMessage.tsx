@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import { FC, useEffect, useRef } from "react";
+import { FC, useRef } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import type { ChatMessage as Message } from "../../../store/slices/chat/chat.slice.types";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
+import { useAudioMessage } from "../hooks/useAudioMessage";
 import { MessageTimestamp } from "./MessageTimestamp";
-import { chatApi } from "../../../api/chat";
 
 export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
   message,
@@ -14,27 +14,7 @@ export const ChatMessage: FC<{ message: Message; showHour: boolean }> = ({
   const userId = useAppSelector(userSelectors.userProfile)?.id;
   const isOwnMessage = message?.sender?.id === userId;
 
-  useEffect(() => {
-    const fetchAudio = async () => {
-      if (!message.audioPath) return;
-
-      const audio = await chatApi.getAudioMessage(message.audioPath);
-      const audioBlob = new Blob([audio], { type: "audio/wav" });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audioElement = document.createElement("audio");
-      audioElement.src = audioUrl;
-      audioElement.preload = "auto";
-      audioElement.controls = true;
-      if (messageElmRef.current) {
-        if (messageElmRef.current.children.length > 0) {
-          messageElmRef.current.removeChild(messageElmRef.current.children[0]);
-        }
-        messageElmRef.current.appendChild(audioElement);
-      }
-    };
-
-    fetchAudio();
-  }, [message.audioPath]);
+  useAudioMessage(message, messageElmRef);
 
   if (!userId || !message?.sender) return null;
 

@@ -1,19 +1,11 @@
-import { VideoChatOutlined, WifiCallingOutlined } from "@mui/icons-material";
-import { IconButton, styled } from "@mui/material";
+import { VideoChatOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
-import { deepPurple } from "@mui/material/colors";
 import { useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
+import { VoiceCall } from "../../VoiceCall/components/VoiceCall";
 import { LastConnectionBadge } from "./LastConnectionBadge";
-
-const StyledHeaderIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  backgroundColor: deepPurple[50],
-  "&:hover": {
-    backgroundColor: deepPurple[100],
-  },
-}));
+import { StyledHeaderIconButton } from "./StyledHeaderIconButton";
 
 export const ChatHeader = () => {
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
@@ -44,9 +36,7 @@ export const ChatHeader = () => {
         {contactDetails.firstName} {contactDetails.lastName}
       </Box>
       <Box display="flex" alignItems="center" gap={1}>
-        <StyledHeaderIconButton size="small">
-          <WifiCallingOutlined />
-        </StyledHeaderIconButton>
+        <VoiceCall />
         <StyledHeaderIconButton size="small">
           <VideoChatOutlined />
         </StyledHeaderIconButton>

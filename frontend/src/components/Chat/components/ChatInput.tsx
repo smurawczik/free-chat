@@ -2,11 +2,12 @@ import { SendRounded } from "@mui/icons-material";
 import { Box, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { chatThunks } from "../../../store/slices/chat/chat.slice.thunks";
 import { ChatVoiceInput } from "./ChatVoiceInput";
 import { StyledChatIconButton } from "./StyledChatIconButton";
 import { chatApi } from "../../../api/chat";
+import { uiSelectors } from "../../../store/slices/ui/ui.slice.selectors";
 
 const StyledChatInput = styled("input")(() => ({
   width: "100%",
@@ -27,6 +28,7 @@ const StyledChatContainer = styled(Box)(({ theme }) => ({
 
 export const ChatInput = () => {
   const dispatch = useAppDispatch();
+  const isRecording = useAppSelector(uiSelectors.isChatRecording);
   const [message, setMessage] = useState("");
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
 
@@ -74,21 +76,21 @@ export const ChatInput = () => {
   return (
     <StyledChatContainer>
       <form onSubmit={handleSubmit} style={{ display: "flex", width: "100%" }}>
-        {audioBlob ? (
-          <audio
-            src={URL.createObjectURL(audioBlob)}
-            controls
-            style={{ height: 34, width: "100%", paddingRight: 8 }}
-          />
-        ) : (
+        {!isRecording && !audioBlob ? (
           <StyledChatInput
             placeholder="Type your message here..."
             type="text"
             value={message}
             onChange={handleChange}
           />
-        )}
-        <StyledChatIconButton type="submit" size="small">
+        ) : audioBlob ? (
+          <audio
+            src={URL.createObjectURL(audioBlob)}
+            controls
+            style={{ width: "100%", height: "34px", marginRight: "8px" }}
+          />
+        ) : null}
+        <StyledChatIconButton type="submit" size="small" disabled={isRecording}>
           <SendRounded />
         </StyledChatIconButton>
       </form>

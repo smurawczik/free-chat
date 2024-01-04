@@ -10,7 +10,7 @@ async function bootstrap() {
     .get(ConfigService)
     .get<string>('CORS_ALLOWED_ORIGIN_HOST');
   app.enableCors({
-    origin: `http://${CORS_ALLOWED_ORIGIN_HOST}:3000`,
+    origin: new RegExp(`http://${CORS_ALLOWED_ORIGIN_HOST}:3000`),
     credentials: true,
   });
   app.use(cookieParser());

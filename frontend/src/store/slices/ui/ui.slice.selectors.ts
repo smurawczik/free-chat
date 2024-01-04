@@ -12,4 +12,7 @@ export const uiSelectors = {
     createSelector(uiSelector, (state) => Boolean(state.dialogs[key])),
   isNavOpen: (key: UINavs) =>
     createSelector(uiSelector, (state) => Boolean(state.navs[key])),
+  isChatRecording: createSelector(uiSelector, (state) =>
+    Boolean(state.chat.recordingAudio)
+  ),
 };

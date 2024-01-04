@@ -9,6 +9,9 @@ const initialState: UIState = {
   navs: {
     contactInfo: false,
   },
+  chat: {
+    recordingAudio: false,
+  },
 };
 
 export const uiSlice = createSlice({
@@ -27,10 +30,17 @@ export const uiSlice = createSlice({
     ) => {
       state.navs[action.payload.name] = action.payload.status;
     },
+    setChatRecordingState: (
+      state,
+      action: PayloadAction<{ status: boolean }>
+    ) => {
+      state.chat.recordingAudio = action.payload.status;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setDialogState } = uiSlice.actions;
+export const { setDialogState, setNavState, setChatRecordingState } =
+  uiSlice.actions;
 
 export default uiSlice.reducer;
