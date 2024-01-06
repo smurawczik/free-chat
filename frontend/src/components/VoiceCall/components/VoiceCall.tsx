@@ -2,6 +2,8 @@ import { WifiCallingOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyledHeaderIconButton } from "../../Chat/components/StyledHeaderIconButton";
+import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
+import { deepOrange } from "@mui/material/colors";
 
 export const VoiceCall = () => {
   const [callStarted, setCallStarted] = useState(false);
@@ -148,16 +150,22 @@ export const VoiceCall = () => {
     <>
       <Box display="flex" flexDirection="column">
         <audio
-          style={{ width: 100 }}
+          style={{ width: 100, top: -100, position: "absolute" }}
           ref={remoteAudio}
           autoPlay
           controls
         ></audio>
-        <audio style={{ width: 100 }} ref={localAudio} controls muted></audio>
+        <audio
+          style={{ width: 100, top: -100, position: "absolute" }}
+          ref={localAudio}
+          controls
+          muted
+        ></audio>
       </Box>
       <StyledHeaderIconButton
         size="small"
         ref={startButton}
+        sx={callStarted ? { color: deepOrange["300"] } : {}}
         onClick={() => {
           if (callStarted) {
             endCall();
@@ -166,7 +174,7 @@ export const VoiceCall = () => {
           }
         }}
       >
-        <WifiCallingOutlined />
+        {callStarted ? <PhoneInTalkIcon /> : <WifiCallingOutlined />}
       </StyledHeaderIconButton>
     </>
   );
