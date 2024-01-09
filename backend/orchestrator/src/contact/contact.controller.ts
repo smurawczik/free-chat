@@ -22,4 +22,30 @@ export class ContactController {
       createContactDto.contactId,
     );
   }
+
+  @UseGuards(AuthGuard)
+  @Post('accept')
+  acceptContact(
+    @Request() req: any,
+    @Body() createContactDto: CreateContactDto,
+  ) {
+    return this.contactService.acceptRejectNewContact(
+      req.user.id,
+      createContactDto.contactId,
+      'accepted',
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('reject')
+  rejectContact(
+    @Request() req: any,
+    @Body() createContactDto: CreateContactDto,
+  ) {
+    return this.contactService.acceptRejectNewContact(
+      req.user.id,
+      createContactDto.contactId,
+      'rejected',
+    );
+  }
 }

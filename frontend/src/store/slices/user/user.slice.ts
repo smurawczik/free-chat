@@ -44,6 +44,27 @@ export const userSlice = createSlice({
         contact.lastConnection = new Date(lastConnection).toISOString();
       }
     },
+    updateContactStatus: (
+      state,
+      action: PayloadAction<{ contactId: string; status: Contact["status"] }>
+    ) => {
+      const { contactId, status } = action.payload;
+
+      if (contactId === state.profile?.id) return;
+
+      const contact = state.contacts.find(
+        (contact) => contact.id === contactId
+      );
+
+      if (contact) {
+        contact.status = status;
+      }
+    },
+    removeContactById: (state, action: PayloadAction<string>) => {
+      state.contacts = state.contacts.filter(
+        (contact) => contact.id !== action.payload
+      );
+    },
   },
 });
 
@@ -54,6 +75,8 @@ export const {
   addNewContact,
   updateLastConnection,
   updateContactLastConnection,
+  updateContactStatus,
+  removeContactById,
 } = userSlice.actions;
 
 export default userSlice.reducer;

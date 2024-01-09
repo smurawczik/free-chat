@@ -24,6 +24,6 @@ export class Contact {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'enum', enum: ['accepted', 'pending', 'rejected'] })
+  @Column({ type: 'enum', enum: ['accepted', 'pending', 'answer', 'rejected'] })
   status: string;
 }

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setConversation } from "../../../store/slices/chat/chat.slice";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
 import type { Contact as ContactType } from "../../../store/slices/user/user.slice.types";
+import { AnswerRequest } from "./AnswerRequest";
 import { StyledAvatar } from "./StyledAvatar";
 import { StyledBadge } from "./StyledBadge";
 import { StyledListItem } from "./StyledListItem";
@@ -22,9 +23,10 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
   const connected10MinAgo = parsedDate > tenMinutesAgo;
 
   const isPending = contact.status === "pending";
+  const needAnswer = contact.status === "answer";
 
   const getOrCreateConversation = async () => {
-    if (!user?.id || isPending) return;
+    if (!user?.id || isPending || needAnswer) return;
 
     try {
       const conversation = await chatApi.getOrCreateConversation({
@@ -42,7 +44,7 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
 
   return (
     <StyledListItem onClick={getOrCreateConversation}>
-      <ListItemButton disabled={isPending}>
+      <ListItemButton disabled={isPending} disableRipple={needAnswer}>
         <ListItemAvatar>
           <StyledBadge
             overlap="circular"
@@ -60,13 +62,17 @@ export const Contact: FC<{ contact: ContactType }> = ({ contact }) => {
         <ListItemText
           primary={`${contact.firstName} ${contact.lastName}`}
           secondary={
-            isPending
-              ? "Offline - Pending contact request"
-              : connected10MinAgo
-              ? "Online"
-              : connected30MinAgo
-              ? "Away"
-              : "Offline"
+            needAnswer ? (
+              <AnswerRequest contact={contact} />
+            ) : isPending ? (
+              "Offline - Pending contact request"
+            ) : connected10MinAgo ? (
+              "Online"
+            ) : connected30MinAgo ? (
+              "Away"
+            ) : (
+              "Offline"
+            )
           }
         />
       </ListItemButton>

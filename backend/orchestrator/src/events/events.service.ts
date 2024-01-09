@@ -22,4 +22,16 @@ export class EventsService {
       console.log('emitLastConnection error', error);
     }
   }
+
+  subscribeContactAccepted() {
+    return fromEvent(this.emitter, 'contactAccepted');
+  }
+
+  async emitContactAccepted(data: { contactId: string; accepted: boolean }) {
+    try {
+      this.emitter.emit('contactAccepted', { data });
+    } catch (error) {
+      console.log('emitContactAccepted error', error);
+    }
+  }
 }

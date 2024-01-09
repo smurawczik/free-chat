@@ -54,7 +54,7 @@ export const useUpdateUserLastConnection = () => {
     }
   }, [dispatch, userId]);
 
-  useSSEEvent<UserConnectionSSEEvent>(onServerEventReceived);
+  useSSEEvent<UserConnectionSSEEvent>("lastConnection", onServerEventReceived);
 
   useEffect(() => {
     if (!initialConnectionUpdateRef.current && userId) {

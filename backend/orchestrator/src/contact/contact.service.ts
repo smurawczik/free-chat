@@ -26,17 +26,36 @@ export class ContactService {
       return [];
     }
 
-    const { data: userContact } =
-      await this.httpService.axiosRef.post<ContactResponse>('/contact/add', {
-        userId,
-        contactId,
-      });
+    const { data: userContact } = await this.httpService.axiosRef.post<
+      Pick<ContactResponse, 'id' | 'status'>
+    >('/contact/add', {
+      userId,
+      contactId,
+    });
 
-    console.log(userContact);
+    return userContact;
+  }
 
-    return {
-      ...userContact.contact,
-      status: userContact.status,
-    };
+  async acceptRejectNewContact(
+    userId: string,
+    contactId: string,
+    status: string,
+  ) {
+    if (!userId || !contactId) {
+      return [];
+    }
+
+    if (!['accepted', 'rejected'].includes(status)) {
+      throw new Error('Invalid status');
+    }
+
+    const { data: userContact } = await this.httpService.axiosRef.post<
+      Pick<ContactResponse, 'id' | 'status'>
+    >(`/contact/${status === 'accepted' ? 'accept' : 'reject'}`, {
+      userId,
+      contactId,
+    });
+
+    return userContact;
   }
 }

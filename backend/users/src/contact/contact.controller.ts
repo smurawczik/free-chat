@@ -21,6 +21,16 @@ export class ContactController {
     return this.contactService.create(createContactDto);
   }
 
+  @Post('accept')
+  accept(@Body() createContactDto: CreateContactDto) {
+    return this.contactService.accept(createContactDto);
+  }
+
+  @Post('reject')
+  reject(@Body() createContactDto: CreateContactDto) {
+    return this.contactService.reject(createContactDto);
+  }
+
   @Post()
   userContacts(@Body() userContactDto: UserContactDto) {
     return this.contactService.findUserContacts(userContactDto.userId);

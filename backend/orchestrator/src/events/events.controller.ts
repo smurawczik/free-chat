@@ -6,8 +6,8 @@ import { Response } from 'express';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
-  @Sse('subscribe')
-  subscribe() {
+  @Sse('lastConnection')
+  subscribeLastConnection() {
     return this.eventsService.subscribeLastConnection();
   }
 
@@ -18,6 +18,22 @@ export class EventsController {
   ) {
     // Emit the event to the frontend with new connection data
     this.eventsService.emitLastConnection(body);
+
+    return res.status(HttpStatus.OK).send({ message: 'OK' });
+  }
+
+  @Sse('contactAccepted')
+  subscribeContactAccepted() {
+    return this.eventsService.subscribeContactAccepted();
+  }
+
+  @Post('contact-accepted-event')
+  async contactAccepted(
+    @Res() res: Response,
+    @Body() body: { contactId: string; accepted: boolean },
+  ) {
+    // Emit the event to the frontend with accepted or rejected contact data
+    this.eventsService.emitContactAccepted(body);
 
     return res.status(HttpStatus.OK).send({ message: 'OK' });
   }

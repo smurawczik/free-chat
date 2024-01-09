@@ -3,15 +3,12 @@ import { usersApi } from "../api/users";
 import { useAppDispatch } from "../store/hooks";
 import { setAuthStatus } from "../store/slices/auth/auth.slice";
 import { setUser } from "../store/slices/user/user.slice";
-import { useUpdateUserLastConnection } from "./useUpdateUserLastConnection";
 
 interface UseAuthProps {
   initialFetch?: boolean;
 }
 
 export const useAuth = ({ initialFetch }: UseAuthProps) => {
-  useUpdateUserLastConnection();
-
   const userFetchRef = useRef(false);
   const dispatch = useAppDispatch();
 

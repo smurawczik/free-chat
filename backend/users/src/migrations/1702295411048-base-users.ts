@@ -42,7 +42,7 @@ export class BaseUsers1702295411048 implements MigrationInterface {
       queryRunner.manager.create(User, {
         firstName: 'pepe',
         lastName: 'pepe',
-        email: 'admin@pepe.com',
+        email: 'admin@pepe',
         password: await bcrypt.hash('aaaa', saltRounds),
         lastConnection: new Date(new Date()).toUTCString(),
       }),
@@ -84,6 +84,11 @@ export class BaseUsers1702295411048 implements MigrationInterface {
         contact: users[3],
         status: 'pending',
         user: users[1],
+      }),
+      queryRunner.manager.create(Contact, {
+        contact: users[1],
+        status: 'answer',
+        user: users[3],
       }),
     ];
     await queryRunner.manager.save(contacts);

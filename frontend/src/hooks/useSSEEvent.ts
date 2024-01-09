@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { authSelectors } from "../store/slices/auth/auth.slice.selectors";
 
-export function useSSEEvent<T extends Record<string, string>>(
+export function useSSEEvent<T extends Record<string, unknown>>(
+  eventName: string,
   eventHandler: (data: T) => void
 ) {
   const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ export function useSSEEvent<T extends Record<string, string>>(
     }
 
     const eventSource = new EventSource(
-      `${import.meta.env.VITE_BACKEND_URL as string}/events/subscribe`
+      `${import.meta.env.VITE_BACKEND_URL as string}/events/${eventName}`
     );
     eventSource.onmessage = (message) => {
       const data = JSON.parse(message.data) as T;
@@ -28,5 +29,5 @@ export function useSSEEvent<T extends Record<string, string>>(
     return () => {
       eventSource?.close();
     };
-  }, [authUser, dispatch, eventHandler]);
+  }, [authUser, dispatch, eventHandler, eventName]);
 }
