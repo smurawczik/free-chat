@@ -22,9 +22,7 @@ import { AuthService } from './auth.service';
       useFactory: async (configService: ConfigService) => ({
         timeout: 5000,
         maxRedirects: 3,
-        baseURL: `http://${configService.get<string>(
-          'USER_SERVICE_HOST',
-        )}:3001`,
+        baseURL: `${configService.get<string>('USERS_API_URL')}`,
         withCredentials: true,
       }),
       inject: [ConfigService],

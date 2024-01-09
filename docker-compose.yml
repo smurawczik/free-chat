@@ -24,7 +24,9 @@ services:
     ports:
       - 3000:3000
     environment:
-      - USER_SERVICE_HOST=users
+      - USERS_API_URL=http://users:3001
+      - FRONTEND_URL=http://localhost:5173
+      - PORT=3000
     volumes:
       - ./backend/orchestrator:/orchestrator
       - /orchestrator/node_modules
@@ -42,7 +44,8 @@ services:
       target: debug
     environment:
       - DB_HOST=database
-      - CORS_ALLOWED_ORIGIN_HOST=orchestrator
+      - GATEWAY_API_URL=http://orchestrator:3000
+      - PORT=3001
     ports:
       - 3001:3001
     depends_on:

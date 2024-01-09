@@ -6,16 +6,23 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const CORS_ALLOWED_ORIGIN_HOST = await app
-    .get(ConfigService)
-    .get<string>('CORS_ALLOWED_ORIGIN_HOST');
+  const configService = app.get(ConfigService);
+  const gatewayApiURL = configService.get<string>('GATEWAY_API_URL');
+  const serverPort = configService.get<number>('PORT');
+
+  if (!serverPort || !gatewayApiURL) {
+    throw new Error('Missing environment variables');
+  }
+
   app.enableCors({
-    origin: new RegExp(`http://${CORS_ALLOWED_ORIGIN_HOST}:3000`),
+    origin: new RegExp(`${gatewayApiURL}`),
     credentials: true,
   });
   app.use(cookieParser());
   app.use(compression());
-  await app.listen(3001, () => console.log('users is listening on port 3001'));
+  await app.listen(serverPort, () =>
+    console.log(`users is listening on port ${serverPort}`),
+  );
 }
 
 bootstrap();

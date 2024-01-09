@@ -2,15 +2,25 @@ import { NestFactory } from '@nestjs/core';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({ origin: 'http://localhost:5173', credentials: true });
+  const configService = app.get(ConfigService);
+  const serverPort = configService.get<number>('PORT');
+  const frontendApiURL = configService.get<string>('FRONTEND_URL');
+
+  if (!serverPort || !frontendApiURL) {
+    throw new Error('Missing environment variables');
+  }
+
+  console.log('frontendApiURL', frontendApiURL);
+
+  app.enableCors({ origin: frontendApiURL, credentials: true });
   app.use(cookieParser());
   app.use(compression());
-  // app.useWebSocketAdapter(new WsAdapter(app));
-  await app.listen(3000, () =>
-    console.log('orchestrator is listening on port 3000'),
+  await app.listen(serverPort, () =>
+    console.log(`orchestrator is listening on port ${serverPort}`),
   );
 }
 bootstrap();
