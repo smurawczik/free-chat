@@ -1,7 +1,7 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { Contact } from 'src/contact/entities/contact.entity';
+import { Contact } from 'src/modules/contact/entities/contact.entity';
 
 export class BaseUsers1702295411048 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
