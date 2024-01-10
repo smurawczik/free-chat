@@ -1,6 +1,6 @@
 import { AppLoading } from "./components/AppLoading";
 import { ChatView } from "./components/ChatView/components/ChatView";
-import { HookExecuter } from "./components/Hooks/HookExecuter";
+import { HookExecuter } from "./components/HookExecuter/HookExecuter";
 import { Layout } from "./components/Layout/components/Layout";
 import { LeftNavigation } from "./components/LeftNavigation";
 import { QuickAccessDialog } from "./components/QuickAccessDialog";
