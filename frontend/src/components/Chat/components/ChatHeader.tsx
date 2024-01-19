@@ -1,11 +1,10 @@
-import { VideoChatOutlined } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "../../../store/hooks";
 import { chatSelectors } from "../../../store/slices/chat/chat.slice.selectors";
 import { userSelectors } from "../../../store/slices/user/user.slice.selectors";
-import { VoiceCall } from "../../VoiceCall/components/VoiceCall";
+import { VoiceCall } from "../../Calls/components/VoiceCall";
 import { LastConnectionBadge } from "./LastConnectionBadge";
-import { StyledHeaderIconButton } from "./StyledHeaderIconButton";
+import { VideoCall } from "../../Calls/components/VideoCall";
 
 export const ChatHeader = () => {
   const currentConversation = useAppSelector(chatSelectors.currentConversation);
@@ -37,9 +36,7 @@ export const ChatHeader = () => {
       </Box>
       <Box display="flex" alignItems="center" gap={1}>
         <VoiceCall />
-        <StyledHeaderIconButton size="small">
-          <VideoChatOutlined />
-        </StyledHeaderIconButton>
+        <VideoCall />
       </Box>
     </Box>
   );

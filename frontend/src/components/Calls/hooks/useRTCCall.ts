@@ -1,18 +1,12 @@
-import { WifiCallingOutlined } from "@mui/icons-material";
-import Box from "@mui/material/Box";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { StyledHeaderIconButton } from "../../Chat/components/StyledHeaderIconButton";
-import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
-import { deepOrange } from "@mui/material/colors";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 
-export const VoiceCall = () => {
+export const useRTCCall = (constraints?: MediaStreamConstraints) => {
   const [callStarted, setCallStarted] = useState(false);
 
   const messageAttachedRef = useRef(false);
 
-  const startButton = useRef<HTMLButtonElement>(null);
-  const localAudio = useRef<HTMLAudioElement>(null);
-  const remoteAudio = useRef<HTMLAudioElement>(null);
+  const localData = useRef<HTMLVideoElement>(null);
+  const remoteData = useRef<HTMLVideoElement>(null);
 
   const localStream = useRef<MediaStream | null>(null);
   const remoteStream = useRef<MediaStream | null>(null);
@@ -95,12 +89,12 @@ export const VoiceCall = () => {
   }, [ws]);
 
   const startCall = useCallback(async () => {
-    localStream.current = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
+    localStream.current = await navigator.mediaDevices.getUserMedia(
+      constraints
+    );
 
-    if (!localAudio.current) return;
-    localAudio.current.srcObject = localStream.current;
+    if (!localData.current) return;
+    localData.current.srcObject = localStream.current;
 
     peerConnection.current = new RTCPeerConnection();
 
@@ -120,10 +114,10 @@ export const VoiceCall = () => {
     peerConnection.current.ontrack = (event) => {
       // Received remote audio stream
       remoteStream.current = event.streams[0];
-      if (!remoteAudio.current) return;
+      if (!remoteData.current) return;
       console.log("receiving", remoteStream.current);
 
-      remoteAudio.current.srcObject = remoteStream.current;
+      remoteData.current.srcObject = remoteStream.current;
     };
 
     const offer = await peerConnection.current.createOffer();
@@ -132,50 +126,27 @@ export const VoiceCall = () => {
     ws.send(JSON.stringify({ sdp: offer }));
 
     setCallStarted(true);
-  }, [ws]);
+  }, [constraints, ws]);
 
   const endCall = useCallback(() => {
+    ws.close();
+
     if (!peerConnection.current || !localStream.current) return;
     peerConnection.current.close();
     localStream.current.getTracks().forEach((track) => track.stop());
 
-    if (!localAudio.current || !remoteAudio.current) return;
-    localAudio.current.srcObject = null;
-    remoteAudio.current.srcObject = null;
+    if (!localData.current || !remoteData.current) return;
+    localData.current.srcObject = null;
+    remoteData.current.srcObject = null;
 
     setCallStarted(false);
-  }, []);
+  }, [ws]);
 
-  return (
-    <>
-      <Box display="flex" flexDirection="column">
-        <audio
-          style={{ width: 100, top: -100, position: "absolute" }}
-          ref={remoteAudio}
-          autoPlay
-          controls
-        ></audio>
-        <audio
-          style={{ width: 100, top: -100, position: "absolute" }}
-          ref={localAudio}
-          controls
-          muted
-        ></audio>
-      </Box>
-      <StyledHeaderIconButton
-        size="small"
-        ref={startButton}
-        sx={callStarted ? { color: deepOrange["300"] } : {}}
-        onClick={() => {
-          if (callStarted) {
-            endCall();
-          } else {
-            startCall();
-          }
-        }}
-      >
-        {callStarted ? <PhoneInTalkIcon /> : <WifiCallingOutlined />}
-      </StyledHeaderIconButton>
-    </>
-  );
+  return {
+    callStarted,
+    localData,
+    remoteData,
+    startCall,
+    endCall,
+  };
 };
