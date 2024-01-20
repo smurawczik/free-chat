@@ -26,6 +26,7 @@ export const QuickAccessDialog = () => {
             color: "white",
           },
         }}
+        id="quick-access-dialog"
       >
         <Box display="flex" alignItems="center">
           {register ? (

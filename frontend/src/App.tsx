@@ -8,7 +8,7 @@ import { RightNavigation } from "./components/RightNavigation";
 import { useAppSelector } from "./store/hooks";
 import { authSelectors } from "./store/slices/auth/auth.slice.selectors";
 
-function App() {
+export function App() {
   const authSuccess = useAppSelector(authSelectors.authIsSucceeded);
   const authLoading = useAppSelector(authSelectors.authIsLoading);
 
@@ -30,5 +30,3 @@ function App() {
     </>
   );
 }
-
-export default App;
