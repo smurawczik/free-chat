@@ -8,8 +8,6 @@ export class ChatSingleton {
   private roomId: string = "";
 
   public static getInstance(): ChatSingleton {
-    console.log("Getting instance");
-
     if (!ChatSingleton.instance) {
       ChatSingleton.instance = new ChatSingleton();
     }

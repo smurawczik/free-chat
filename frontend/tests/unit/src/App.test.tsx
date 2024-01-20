@@ -1,19 +1,9 @@
-import { render, waitFor } from "@testing-library/react";
 import React from "react";
 import { App } from "../../../src/App";
-import { ThemeProvider } from "@emotion/react";
-import { Provider } from "react-redux";
-import { store } from "../../../src/store/store";
-import { theme } from "../../../src/theme/index.ts";
+import { render, waitFor } from "../../utils";
 
 test("renders the App component and has initial dialog", async () => {
-  const { getByText } = render(
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Provider>
-  );
+  const { getByText } = render(<App />);
 
   await waitFor(() => {
     expect(getByText("Create a user")).toBeInTheDocument();
